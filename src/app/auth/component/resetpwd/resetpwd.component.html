@@ -1,0 +1,98 @@
+<div class="auth">
+  <div class="auth__form">
+    <a routerLink="/" class="auth__logo">
+      <div class="auth__logo-img">
+        <img src="../../../../assets/images/logo.png" alt="">
+      </div>
+      <div class="auth__logo-text">Squibler</div>
+    </a>
+    <div class="auth__img"></div>
+    <form [formGroup]="forgetPasswordForm" (ngSubmit)="onSubmit()" class="auth__form-block" *ngIf="!resetPasswordForm">
+      <div class="auth__title">Forgot Password</div>
+      <input type="email" name="email" formControlName="email" class="auth__input" placeholder="Your email adress" [ngClass]="{'is-invalid': submitted && resetPasswordFormState.email.errors }"
+      />
+      <div *ngIf="submitted && resetPasswordFormState.email.errors" class="auth__error">
+        <div *ngIf="resetPasswordFormState.email.errors.email">Email is required</div>
+      </div>
+      <div class="auth__text">Enter the email address that you used to register. We'll send you an email with a link to reset your password.
+      </div>
+      <div class="errors">
+        <div *ngIf=" errorMessage">
+          {{errorMessage}}
+        </div>
+
+      </div>
+      <div id="confirmCodeSuccess" class="auth__text" style=" text-align: center;" *ngIf="confirmCodeSuccess">
+        {{this.confirmCodeSuccess}}
+      </div>
+      <button class="auth__button">
+        <div *ngIf="loading" class="loader"></div>
+        <span *ngIf="!loading">Send</span>
+      </button>
+      <div class="auth__text">If you still need help, contact us at info@squibler.com </div>
+    </form>
+    <div class="auth__form-block sent-email">
+      <div class="auth__title">Sent!</div>
+      <div class="auth__form-subtext">Please check your email and follow the Reset Password link!</div>
+      <div class="auth__text">If you still need help, contact us at info@squibler.com </div>
+    </div>
+
+    <!-- <form class="auth__form-block reset-password">
+      <div class="auth__title">Reset Password</div>
+      <input type="password" name="newPassword" formControlName="newPassword" class="auth__input" placeholder="Enter New Password"
+      />
+      <button class="auth__button">
+
+        Confirm
+
+      </button>
+      <div class="auth__text">If you still need help, contact us at info@squibler.com </div>
+    </form> -->
+
+    <form [formGroup]="confirmCodeForm" (ngSubmit)="sentCode()" class="auth__form-block" *ngIf="resetPasswordForm">
+      <input type="hidden" name="confirmCode" [readonly]="true" formControlName="confirmCode" class="auth__input" placeholder="Confirm Code"
+        [ngClass]="{ 'is-invalid': submitted && confirmCodeFormState.confirmCode.errors }" />
+      <div *ngIf="submitted && confirmCodeFormState.confirmCode.errors" class="invalid-feedback">
+        <div *ngIf="confirmCodeFormState.confirmCode.errors.confirmCode">confirmCode is required</div>
+      </div>
+      <input type="password" name="password" formControlName="password" class="auth__input" placeholder="New Password" [ngClass]="{ 'is-invalid': submitted && confirmCodeFormState.password.errors }"
+      />
+      <div *ngIf="submitted && confirmCodeFormState.password.errors" class="invalid-feedback">
+        <div *ngIf="confirmCodeFormState.password.errors.password">New password is required</div>
+      </div>
+      <input type="password" name="confirmPassword" formControlName="confirmPassword" class="auth__input" placeholder="Confirm Password"
+        [ngClass]="{ 'is-invalid': submitted && confirmCodeFormState.confirmPassword.errors }" />
+      <div *ngIf="submitted && confirmCodeFormState.confirmPassword.errors" class="invalid-feedback">
+        <div *ngIf="confirmCodeFormState.confirmPassword.errors.confirmPassword">Confirm password is required</div>
+      </div>
+      <div class="auth__signup-btn">
+        <div class="errors">
+          <div *ngIf="this.confirmCodeError">
+            {{this.confirmCodeError}}
+          </div>
+
+        </div>
+        <div style="font-size: 10px; text-align: center;" *ngIf="confirmCodeSuccess">
+          {{this.confirmCodeSuccess}}
+        </div>
+        <div class="auth__buttons">
+          <button [disabled]="loading" class="auth__button">Submit</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="auth__footer">
+      <a [routerLink]="['/auth/register']">Sign up</a>
+      <a [routerLink]="['/auth/login']">Login</a>
+    </div>
+  </div>
+  <div class="auth__baner">
+    <div class="auth__baner-title">
+      Write and publish your book in 30 days:
+    </div>
+    <div class="auth__baner-item">○ Get 10 days free and fall in love with product</div>
+    <div class="auth__baner-item">○ Capture your ideas, Create an outline, Publish your book</div>
+    <div class="auth__baner-item">○ The only online tool that enables you to write books faster</div>
+  </div>
+
+</div>

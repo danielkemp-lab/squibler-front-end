@@ -1,0 +1,14 @@
+<div id="navigation" class="navigation" [ngClass]="{'active': open}">
+  <a routerLink="/dashboard/projects" class="navigation__logo">
+    <div class="navigation__logo-img">
+      <img src="../../../../../assets/images/logo.png" alt="">
+    </div>
+    <div class="navigation__logo-text">Squibler</div>
+  </a>
+  <div class="navigation__menu">
+    <a routerLink="/dashboard/projects" routerLinkActive="active" class="navigation__menu-item">
+      <i class="icon-book"></i> Projects</a>
+    <a routerLink="/dashboard/profile" routerLinkActive="active" class="navigation__menu-item">
+      <img src="{{userPhoto || '../../../../../../../assets/images/user.png'}}" /> Profile</a>
+  </div>
+</div>

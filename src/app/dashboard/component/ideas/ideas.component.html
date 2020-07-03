@@ -1,0 +1,154 @@
+<div class="ideas" [ngClass]="{'quote': showQuote && ideasList[0]}">
+  <!-- <app-header [selected]="'ideas'"></app-header> -->
+  <div class="balls" *ngIf="loader"></div>
+  <div class="ideas__board-header">
+    <div class="ideas__board-header-img" (click)="showCustomTitle($event)">
+      <img src="../../../../../assets/images/icons/maximise.png" alt="" class="ideas__board-header-icon">
+    </div>
+    <div class="ideas__board-header-input">
+      <input type="text" placeholder="Untitled">
+      <div class="ideas__board-header-delete">
+        <button class="ideas__board-header-delete-btn">Delete Board</button>
+      </div>
+
+    </div>
+    <div class="board__delete-popup">
+      <div class="board__delete-popup-title">Are you sure you want permanently delete this board
+        and all of its associated content?</div>
+      <div class="board__delete-popup-controls">
+        <button>No</button>
+        <button>Yes</button>
+      </div>
+    </div>
+    <!-- <app-custom-title-popup [openCustomTitle]="openCustomTitle"></app-custom-title-popup> -->
+    <!-- <div class="board__custom-block">
+      <div class="board__custom-subblock">
+        <div class="board__custom-subblock-title">Colors</div>
+        <div class="board__list">
+          <div class="board__list-colors-item" style="background-color: #bfbfbf;"></div>
+          <div class="board__list-colors-item" style="background-color: #d0021b;"></div>
+          <div class="board__list-colors-item" style="background-color: #f5a623;"></div>
+          <div class="board__list-colors-item" style="background-color: #8b572a;"></div>
+          <div class="board__list-colors-item" style="background-color: #7ed321;"></div>
+          <div class="board__list-colors-item" style="background-color: #bd10e0;"></div>
+          <div class="board__list-colors-item" style="background-color: #4a90e2;"></div>
+          <div class="board__list-colors-item" style="background-color: #50e3c2;"></div>
+          <div class="board__list-colors-item" style="background-color: #4a4a4a;"></div>
+        </div>
+      </div>
+      <div class="board__custom-subblock">
+        <div class="board__custom-subblock-title">Icons</div>
+        <div class="board__list">
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+          <div class="board__list-icon">
+            <img src="../../../../../assets/images/icons/maximise.png" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="board__custom-import">
+        <button class="board__custom-import-btn">Import icon</button>
+      </div>
+    </div> -->
+  </div>
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: row;" *ngIf="!loader">
+    <div class="ideas__list" *ngIf="ideasList[0]">
+      <div class="ideas__list-header">
+        <div class="ideas__add-idea" (click)="addNewIdea()"></div>
+        <div class="ideas__search-idea">
+          <i class="icon-search" (click)="this.searchActive = true;"></i>
+          <input type="text" [ngClass]="{'active': searchActive}" [(ngModel)]="searchText" placeholder="Search..." />
+        </div>
+      </div>
+      <div class="ideas__items">
+        <div class="ideas__list-item" [ngClass]="{'active': item.id == currentIdea.id}" (click)="getIdeas(item)" *ngFor="let item of ideasList | filterNotes : searchText">
+          <div class="ideas__item-header">
+            <div class="ideas__item-title" [ngClass]="{'empty': !item.title}">{{item.title ? item.title : 'Untitled Idea'}}</div>
+            <!-- <div class="ideas__item-date">{{item.updated_at | date:'d MMMM y'}}</div> -->
+            <!-- <div class="ideas__dropdown icon-more-vertical">
+              <div class="ideas__dropdown-content">
+                <div class="ideas__dropdown-item" (click)="duplicateIdea(item)">Duplicate</div>
+                <div class="ideas__dropdown-item delete" (click)="deleteIdea(item)">Delete</div>
+              </div>
+            </div> -->
+          </div>
+          <!-- <div class="ideas__item-content" [ngClass]="{'empty': !item.description, 'include-image' : item.imageArray ? item.imageArray.length : 'undefined'}" [innerHTML]="item.description ? item.description : 'No additional text...' "></div> -->
+          <div class="image-inside" [hidden]="item.imageArray ? !item.imageArray.length : true">
+            <img src="{{item.imageArray ? item.imageArray[0] : null }}" alt="img">
+            <div class="center-number">{{item.imageArray ? item.imageArray.length-1 > 0 ? '+'.concat(item.imageArray.length-1) : '' : ''}}</div>
+          </div>
+          <div class="ideas__dropdown icon-more-vertical">
+            <div class="ideas__dropdown-content">
+              <div class="ideas__dropdown-item" (click)="duplicateIdea(item)">Duplicate</div>
+              <div class="ideas__dropdown-item delete" (click)="deleteIdea(item)">Delete</div>
+            </div>
+          </div>
+          <div class="ideas__item-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ideas__notification" [ngClass]="{'active': addPopupFlag}">Idea has been assigned and moved to:
+      <a [routerLink]="['/dashboard/projects/' + assignedProjectId]">{{assignedProjectName}}</a>
+    </div>
+    <div class="ideas__editor" *ngIf="ideasList[0]">
+      <div class="ideas__quote" [ngClass]="{'visible': showQuote}">
+        <div class="ideas__quote-content">
+          If you don't have time to read, you don't have the time (or the tools) to write.
+        </div>
+        <div class="ideas__quote-author">Stephen King</div>
+        <div class="ideas__quote-close" (click)="hideQuote()"></div>
+      </div>
+      <div [hidden]="!saveDocumentFlag" class="editor__notification">Your work has been saved!</div>
+      <form style="height: 100%" [formGroup]="froalaForm" (ngSubmit)="onSubmit()">
+        <div class="ideas__editor-header">
+          <input #ideaName type="text" name="title" formControlName="title" class="ideas__editor-title" placeholder="Untitled Idea" />
+          <div class="ideas__editor-dropdown" (click)="openedProjectPopup()">Options
+            <div class="ideas__editor-dropdown-content" [ngClass]="{'active' : openedProjectPopupVar }">
+              <div class="ideas__editor-dropdown-item" *ngFor="let project of projectList" (click)="addIdeaToProject(project)">
+                {{project.title}}
+              </div>
+              <div class="ideas__editor-dropdown-add" (click)="addNewProject()"> Create New Project
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ideas__editor-fullscreen"></div>
+        <textarea (keydown)="onKeyDown($event)" (froalaEventName)="someFunction()" formControlName="description" [froalaEditor]="options" [froalaModel]="editorContent" placeholder="Your thoughts here...">Hello, Froala!</textarea>
+      </form>
+    </div>
+    <div class="ideas__empty-list" *ngIf="!ideasList[0] && !loader">
+      <div class="ideas__empty-desc">
+        <div class="ideas__empty-title">Notes Manager</div>
+        <div class="ideas__empty-text">
+          <span>Note</span> is where you keep all your research for project. Each
+          <br>note can have text, links, images, etc
+          <br>
+          <br> This is your
+          <span>Global Notes Manager</span>. It will help you to create
+          <br> new notes and assign them to the project.
+        </div>
+      </div>
+      <div class="ideas__empty-title">Nothing is here yet</div>
+      <div class="ideas__empty-btn" (click)="addNewIdea()">Make a note</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div *ngIf="configs.hideBar" class="te-toolbar te-desktop te-top">
+    <div style="position: relative">
+    <button *ngIf="configs.toolbarButtons.fontFamily" id="fontFamily-2" type="button" tabindex="-1" role="button"
+            aria-controls="dropdown-menu-fontFamily-2" title="Font Family"
+            [class]="fontFamilyStatus ? 'te-active te-command te-btn te-dropdown te-btn-font_awesome te-selection': 'te-command te-btn te-dropdown te-btn-font_awesome te-selection' "
+            (click)="toggleFontDropdown()" data-cmd="fontFamily" ><span style="width:120px">{{ fontFamilyText }}</span></button>
+    <div id="dropdown-menu-fontFamily-2" style="left: 0;top:32px;" class="te-dropdown-menu" role="listbox" aria-labelledby="fontFamily-2">
+      <div class="te-dropdown-wrapper">
+        <div class="te-dropdown-content">
+          <ul class="te-dropdown-list">
+              <li *ngFor="let font of configs.fontFamily | keyvalue"><a (click)="fontchange(font.key, font.value)" class="te-command" tabindex="-1" [ngStyle]="{'font-family': font.value}" title="{{font.key}}">{{font.key}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div></div>
+
+    <button *ngIf="configs.toolbarButtons.bold" id="bold" type="button" tabindex="-1" role="button" title="Bold (⌘B)" class="te-command te-btn te-btn-font_awesome {{boldBtnClass}}" (click)="bold()"><i class="fa fa-bold"></i><span class="te-sr-only">Bold</span></button>
+    <button *ngIf="configs.toolbarButtons.italic" id="italic" type="button" tabindex="-1" role="button" title="Italic (⌘I)" class="te-command te-btn te-btn-font_awesome {{italicBtnClass}}" (click)="italic()"><i class="fa fa-italic"></i><span class="te-sr-only">Italic</span></button>
+    <button *ngIf="configs.toolbarButtons.underline" id="underline" type="button" tabindex="-1" role="button" title="Underline (⌘U)" class="te-command te-btn te-btn-font_awesome {{underlineBtnClass}}" (click)="underline()"><i class="fa fa-underline"></i><span class="te-sr-only">Underline</span></button>
+    <div class="te-btn-wrap" *ngIf="configs.toolbarButtons.formatUL">
+        <button (click)="insertUnorderedList()" id="formatUL" type="button" tabindex="-1" role="button" title="Unordered List" class="te-command te-btn te-btn-font_awesome {{listBtnClass}}" data-cmd="formatUL"><i class="fa fa-list-ul"></i><span class="te-sr-only">Unordered List</span></button>
+    </div>
+<!--  <button id="align-2" type="button" tabindex="-1" role="button" aria-controls="dropdown-menu-align-2" title="Align" class="te-command te-btn te-dropdown te-btn-font_awesome" data-cmd="align" ><i class="fa fa-align-justify"></i><span class="te-sr-only">Align</span></button>-->
+  <div *ngIf="configs.toolbarButtons.align" class="te-btn-wrap" style="position: relative">
+    <button (click)="toggleAlignDropdown()" [class]="alignStatus? alignToggleClass: 'te-command te-btn te-dropdown te-selection'"><i [class]="alignStatus? alignClass: 'fa fa-align-justify btn-align'" style="margin: 8px 16px !important"><span class="te-sr-only"></span></i></button>
+  <div id="dropdown-menu-align-2" class="te-dropdown-menu alignText" role="listbox" aria-labelledby="align">
+    <div class="te-dropdown-wrapper">
+      <div class="te-dropdown-content">
+        <ul class="te-dropdown-list" style="list-style-type: none;">
+          <li><a class="te-command te-title" tabindex="-1" title="Align Left" (click)="alignLeft()"><i class="fa fa-align-left"></i><span class="te-sr-only">Align Left</span></a></li>
+          <li><a class="te-command te-title" tabindex="-1" title="Align Center" (click)="alignCenter()"><i class="fa fa-align-center"></i><span class="te-sr-only">Align Center</span></a></li>
+          <li><a class="te-command te-title" tabindex="-1" title="Align Right" (click)="alignRight()"><i class="fa fa-align-right"></i><span class="te-sr-only">Align Right</span></a></li>
+          <li><a class="te-command te-title" tabindex="-1" title="Align Justify" (click)="alignFull()"><i class="fa fa-align-justify"></i><span class="te-sr-only">Align Justify</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+  <button #imageUploadButton *ngIf="configs.toolbarButtons.image" (click)="imageUploaderToggle()" id="insertImage" type="button" tabindex="-1" role="button"
+            title="Insert Image (⌘P)" class="te-command te-btn te-btn-font_awesome" data-cmd="insertImage" data-popup="true" ><i class="fa fa-image"></i><span class="te-sr-only">Insert Image</span></button>
+    <div *ngIf="configs.imageUploadSpaceOpen" class="te-popup te-desktop te-active te-upload-box" [ngStyle]="{'left': configs.imagePopupDivLeftPosition +'px', 'top': '22px'}"><span class="te-arrow" style="margin-left: -5px;"></span>
+        <div class="te-buttons">
+            <button id="imageBack-2" type="button" tabindex="-1" role="button" title="Back"
+                    class="te-command te-btn te-btn-font_awesome te-back te-hidden" data-cmd="imageBack"><i
+                class="fa fa-arrow-left" aria-hidden="true"></i><span class="te-sr-only">Back</span></button>
+            <div class="te-separator te-vs te-hidden" role="separator" aria-orientation="vertical"></div>
+            <button id="imageUpload-2" type="button" tabindex="-1" role="button" aria-pressed="true"
+                    title="Upload Image" class="te-command te-btn te-btn-font_awesome te-active" data-cmd="imageUpload">
+                <i class="fa fa-upload" aria-hidden="true"></i><span class="te-sr-only">Upload Image</span></button>
+        </div>
+        <div [class]="!configs.imageLoader? 'te-image-upload-layer te-active te-layer': 'hidden'" id="te-image-upload-layer-2"
+             (change)="onFileChange($event)"><strong>Drop image</strong><br>(or click)
+            <div class="te-form"><input type="file" accept="image/jpeg, image/jpg, image/png, image/gif, image/webp"
+                                        tabindex="-1" aria-labelledby="te-image-upload-layer-2" role="button"
+                                        dir="auto"></div>
+        </div>
+        <div [class]="configs.imageLoader? 'te-image-progress-bar-layer': 'hidden'" ><h3 tabindex="-1" class="te-message balls"></h3>
+            <div class="te-loader"><span class="te-progress"></span></div>
+        </div>
+    </div>
+    <button *ngIf="configs.toolbarButtons.url" id="url" type="button" tabindex="-1" role="button" title="URL" class="te-command te-btn te-btn-font_awesome {{urlBtnClass}}" (click)="urlInsertToggle()" ><i class="fa fa-link"></i><span class="te-sr-only">Link</span></button>
+    <div *ngIf="configs.urlInsertSpaceOpen" class="te-popup te-desktop te-active" [ngStyle]="{'left': configs.urlPopupDivLeftPosition +'px', 'top': '22px'}">
+        <div class="te-popup te-desktop te-active" >
+            <span class="te-arrow" style="margin-left: -103px;"></span>
+            <div class="te-buttons">
+                <button id="linkBack-16" type="button" tabindex="-1" role="button" title="Back" class="te-command te-btn te-btn-font_awesome te-back te-hidden" data-cmd="linkBack">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <span class="te-sr-only">Back</span>
+                </button>
+                <button id="linkList-16" type="button" tabindex="-1" (click)="urlSearchBtnClick()" role="button" aria-controls="dropdown-menu-linkList-16" aria-expanded="false" aria-haspopup="true" title="Choose Link" [class]="urlSearchStatus ? 'te-active te-command te-btn te-dropdown te-btn-font_awesome te-selection': 'te-command te-btn te-dropdown te-btn-font_awesome te-selection' " data-cmd="linkList">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <span class="te-sr-only">Choose Link</span>
+                </button>
+                <div id="dropdown-menu-linkList-16" class="te-dropdown-menu" role="listbox" aria-labelledby="linkList-16" aria-hidden="true" style="left: 2px; top: 32px;">
+                    <div class="te-dropdown-wrapper" role="presentation">
+                        <div class="te-dropdown-content" role="presentation">
+                            <ul class="te-dropdown-list" role="presentation">
+                                <li role="presentation">
+                                    <a class="te-command" tabindex="-1" role="option" data-cmd="linkList" data-param1="1" aria-selected="false" (click)="linkClick('Google', 'https://google.com')">Google</a>
+                                </li>
+                                <li role="presentation">
+                                    <a class="te-command" tabindex="-1" role="option" data-cmd="linkList" data-param1="2" aria-selected="false"(click)="linkClick('Facebook', 'https://facebook.com')">Facebook</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="te-link-insert-layer te-layer te-active" id="te-link-insert-layer-16">
+                <div class="te-input-line">
+                    <input id="te-link-insert-layer-url-16" #urlLink name="href" type="text" class="te-link-attr" placeholder="URL" tabindex="1" dir="auto">
+                    <label for="te-link-insert-layer-url-16">URL</label>
+                </div>
+                <div class="te-input-line">
+                    <input id="te-link-insert-layer-text-16" #urlText name="text" type="text" class="te-link-attr" placeholder="Text" tabindex="2" dir="auto">
+                    <label for="te-link-insert-layer-text-16">Text</label>
+                </div>
+                <div class="te-checkbox-line">
+                    <span class="te-checkbox">
+                        <input name="target" #urlBlank class="te-link-attr te-not-empty" data-checked="_blank" type="checkbox" id="te-link-target-16" tabindex="3" dir="auto">
+                        <span>
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="10" viewBox="0 0 32 32">
+                                <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#FFF"></path>
+                            </svg>
+                        </span>
+                    </span>
+                    <label for="te-link-target-16">Open in new tab</label>
+                </div>
+                <div class="te-action-buttons">
+                    <button class="te-command te-submit" role="button" (click)="onUrlInsert()" data-cmd="linkInsert" href="#" tabindex="4" type="button">Insert</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

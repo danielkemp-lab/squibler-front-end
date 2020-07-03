@@ -1,0 +1,55 @@
+<div class="home" [ngClass]="{'blured': trialExpired}">
+  <div class="home__menu" [ngClass]="{'active': menuOpen}">
+    <app-navigation [open]="menuOpen"></app-navigation>
+  </div>
+  <div class="home__content">
+    <router-outlet (activate)="routeChange()"></router-outlet>
+  </div>
+</div>
+<div class="trial" *ngIf="trialExpired">
+  <div class="trial__header">
+    <a [routerLink]="['/']" class="trial__logo">
+      <div class="trial__logo-img"></div>
+      <div class="trial__logo-text">Squibler</div>
+    </a>
+  </div>
+  <div class="trial__content" [ngClass]="{'disabled': exportPopup}">
+    <div class="trial__subscribe">
+      <div class="trial__subscribe-title">Free Trial Expired</div>
+      <div class="trial__subscribe-text">Your free-trial period is coming to an end. Please consider getting a paid subscription to continue with us.</div>
+      <div class="trial__subscribe-actions">
+        <div class="trial__subscribe-price">$10/
+          <span>mo</span>
+        </div>
+        <a class="trial__subscribe-btn" [routerLink]="['/dashboard/profile']">Get the plan</a>
+      </div>
+    </div>
+    <div class="trial__export">
+      Thank you for trying Squibler. Please
+      <span (click)="exportPopup = true;">export your work</span> if you
+      <br> choose not to continue using Squibler.
+    </div>
+    <div class="trial__touch">
+      If there anything we can help you with please
+      <a href="mailto:care@squibler.io" target="_blank">
+        get in touch
+      </a>
+    </div>
+  </div>
+  <div class="trial__projects" [ngClass]="{'active': exportPopup}">
+    <h1>Export your project</h1>
+    <div class="trial__projects-list">
+      <div class="trial__project-list-empty" *ngIf="!projects.length">You don`t have any projects...</div>
+      <div class="trial__project" *ngFor="let project of projects">
+        <div class="trial__project-title">{{project.title || 'Untitled project'}}</div>
+        <div class="trial__project-export-options">
+          <div class="trial__project-export-option" (click)="exportProject(project, 'pdf')">PDF</div>
+          <div class="trial__project-export-option" (click)="exportProject(project, 'txt')">TXT</div>
+          <div class="trial__project-export-option" (click)="exportProject(project, 'docx')">DOC</div>
+          <div class="trial__project-export-option " (click)="exportProject(project, 'mobi') ">Kindle</div>
+        </div>
+      </div>
+    </div>
+    <div class="trial__subscribe-btn" (click)="exportPopup = false;">Cancel</div>
+  </div>
+</div>

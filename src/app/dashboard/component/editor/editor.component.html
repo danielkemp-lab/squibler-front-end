@@ -1,0 +1,63 @@
+<div *ngIf="active" [hidden]="!updated" class="editor__notification summary-notify">
+  Your work has been saved!</div>
+<div class="editor" [ngClass]="{'full': editorFull}">
+  <div class="editor__sidebar" [ngClass]="{'active': sidebarActive}">
+    <editor-sidebar #sidebar [active]="sidebarActive" (onProjectClick)="onProjectClick($event)" (onBoardClick)="boardClick($event)" (onSectionClick)="onSectionClick($event)" (onToggle)="toggleSidebar()" (onFieldFocus)="fieldFocus($event)"></editor-sidebar>
+  </div>
+  <div class="editor__view" [ngClass]="{'full-scr': editorFull, 'active': sidebarActive, 'project': workingOn === 'project'}">
+    <div [hidden]="!updated" class="editor__notification">Your work has been saved!</div>
+    <div class="balls" *ngIf="!project"></div>
+    <div class="editor_top_bar">
+    <div *ngIf="project" class="editor__fullscr-btn " (click)="toggleFullScr()"></div>
+    <div id="toolbarContainer" class="toolbar"></div>
+      <div #toolbarConatiner></div>
+    </div>
+    <div *ngIf="workingOn == 'project' && project" #projectEditor id="projectEditor" (click)="toolbarBtnChange($event)" class="textEditor">
+
+      <div class="wysiwyg-editor projectTextEditor project_title_main">
+        <div #editor  id="{{ project.uuid }}-title" title="project_title" [innerHTML]="project.title" class="wysiwyg-editor__content  project-title-editor" (keyup)="changeFunction($event)" (keydown.enter)="preventEnter($event)" (keyup.enter)="updateAndFocusProject($event)" (blur)="updateProjectTitle($event)" (focus)="focusFunction($event, projectTitleOptions)" contenteditable="true" spellcheck="true">
+
+        </div>
+        <span *ngIf="project.show_title_placeHolder" class="editor-placeholder">{{projectTitleOptions.placeholderText}}</span>
+      </div>
+      <div class="wysiwyg-editor project_placeholder_main">
+        <div #editor id="{{ project.uuid }}-content" title="project_text" [innerHTML]="project.content | safeHtml" class="wysiwyg-editor__content editor_project_title" (keyup)="changeFunction($event)" (input)="changeFunction($event)" (blur)="updateProjectContent($event.target)" (click)="clickFunction($event)" (focus)="focusFunction($event, projectOptions)" contenteditable="true" spellcheck="true">
+        </div>
+        <span *ngIf="project.show_text_placeHolder" class="editor-placeholder">{{projectOptions.placeholderText}}</span>
+      </div>
+
+      <div class="section" *ngFor="let section of project.sections; let i = index;  trackBy: trackByFn">
+
+        <div class="wysiwyg-editor section_title">
+          <div #editor title="section_title" id='{{section.uuid}}' [innerHTML]="section.title" class="wysiwyg-editor__content section-title-editor" (keydown.enter)="preventEnter($event)" (keyup.enter)="updateAndFocusSection($event)" (keyup)="changeFunction($event)" (blur)="updateSectionTitle($event)" (focus)="focusFunction($event, sectionTitleOptions)" contenteditable="true" spellcheck="true">
+          </div>
+          <span *ngIf="section.show_title_placeHolder" class="editor-placeholder">{{sectionTitleOptions.placeholderText}}</span>
+        </div>
+        <div class="wysiwyg-editor section_placeholder">
+          <div #editor title="section_text" id='{{section.uuid}}' [innerHTML]="section.text | safeHtml" class="wysiwyg-editor__content" (keyup)="changeFunction($event)" (input)="changeFunction($event)" (blur)="updateSection($event.target)" (click)="clickFunction($event)" (focus)="focusFunction($event, options)" contenteditable="true" spellcheck="true">
+          </div>
+          <span *ngIf="section.show_text_placeHolder" class="editor-placeholder">{{options.placeholderText}}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div *ngIf=" workingOn == 'section' && section" (click)="toolbarBtnChange($event)" class="textEditor">
+      <div class="section">
+
+      <div class="wysiwyg-editor section_title">
+        <div #editor title="section_title" id='{{section.uuid}}' [innerHTML]="section.title" class="wysiwyg-editor__content section-title-editor" (keydown.enter)="preventEnter($event)" (keyup.enter)="updateAndFocusSection($event)" (keyup)="changeFunction($event)" (blur)="updateSectionTitle($event)" (focus)="focusFunction($event, sectionTitleOptions)" contenteditable="true" spellcheck="true">
+        </div>
+        <span *ngIf="section.show_title_placeHolder" class="editor-placeholder">{{sectionTitleOptions.placeholderText}}</span>
+      </div>
+      <div class="wysiwyg-editor section_placeholder">
+        <div #editor title="section_text" id='{{section.uuid}}' [innerHTML]="section.text | safeHtml" class="wysiwyg-editor__content" (keyup)="changeFunction($event)" (click)="clickFunction($event)" (input)="changeFunction($event)" (blur)="blurFunction($event)" (focus)="focusFunction($event, options)" contenteditable="true" spellcheck="true">
+        </div>
+        <span *ngIf="section.show_text_placeHolder" class="editor-placeholder">{{options.placeholderText}}</span>
+      </div>
+
+    </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="auth">
+    <div class="auth__form">
+        <a routerLink="/" class="auth__logo">
+            <div class="auth__logo-img">
+                <img src="../../../../assets/images/logo.png" alt="">
+            </div>
+            <div class="auth__logo-text">Squibler</div>
+        </a>
+        <div class="auth__img"></div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth__form-block">
+            <div class="auth__title">Sign In</div>
+            <input type="email" name="email" formControlName="email" class="auth__input" placeholder="Your email adress"
+                   [ngClass]="{'is-invalid': submitted && loginFormState.email.errors }"
+            />
+            <input type="password" name="password" formControlName="password" class="auth__input" placeholder="Password"
+                   [ngClass]="{ 'is-invalid': submitted && loginFormState.password.errors }"
+            />
+            <div class=" auth__forgot ">
+                <a [routerLink]="['/auth/forgot-password']">Forgot your password?</a>
+            </div>
+            <div class="auth__buttons">
+                <button class="auth__button">
+                    <span *ngIf="!loading">Sign in</span>
+                    <span class="balls-white" *ngIf="loading"></span>
+                </button>
+                <span style="margin-top: 16px;">or</span>
+                <div class="gsign" (click)="signInWithGoogle()">
+                    <span class="icon"></span>
+                    <span>Continue with Google</span>
+                </div>
+
+                <div class="fsign gsign" (click)="signInWithFacebook()">
+                    <span class="icon"></span>
+                    <span>Continue with Facebook</span>
+                </div>
+
+            </div>
+            <div class="auth__error" *ngIf="loginError  && submitted">
+                {{loginError}}
+            </div>
+        </form>
+        <div class="auth__footer">
+            Don’t have an account?
+            <a [routerLink]="['/auth/register']">Sign up</a>
+        </div>
+    </div>
+    <div class="auth__baner">
+        <div class="auth__baner-title">
+            Write and publish your book in 30 days:
+        </div>
+        <div class="auth__baner-item">○ Get 10 days free and fall in love with product</div>
+        <div class="auth__baner-item">○ Capture your ideas, Create an outline, Publish your book</div>
+        <div class="auth__baner-item">○ The only online tool that enables you to write books faster</div>
+    </div>
+
+</div>

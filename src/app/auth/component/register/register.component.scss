@@ -1,0 +1,13 @@
+.no-underline {
+    text-decoration: none;
+    cursor: pointer;
+}
+.fsign {
+    background-color: #3b5998;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    .icon {
+      background-image: url('../../../../assets/images/icons/fb-logo.png');
+    }
+  }

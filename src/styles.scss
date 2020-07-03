@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+@import './assets/styles/main.scss';
+
+div.wysiwyg-editor__content, .wysiwyg-editor.section_title div, input, textarea, #boardContent .fr-view{
+  caret-color: #2297a1;
+}
+.app{
+  overflow: hidden;
+}

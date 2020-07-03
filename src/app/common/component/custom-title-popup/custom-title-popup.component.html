@@ -1,0 +1,15 @@
+<div class="custom-title__block" [ngClass]="{'open': active}">
+    <div class="custom-title__subblock">
+        <div class="custom-title__subblock-title">Colors</div>
+        <div class="custom-title__list">
+            <div class="custom-title__list-colors-item" [style.background-color]="color" *ngFor="let color of colors"
+                 (click)="onColorClick.emit({color: color})"></div>
+        </div>
+    </div>
+    <div class="custom-title__subblock">
+        <div class="custom-title__subblock-title">Icons</div>
+        <div class="custom-title__list">
+            <i *ngFor="let icon of icons" class="emoji-{{icon}}" (click)="onIconClick.emit({icon: icon})"></i>
+        </div>
+    </div>
+</div>

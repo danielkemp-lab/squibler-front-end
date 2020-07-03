@@ -1,0 +1,145 @@
+<div id="imageToolbar" [ngClass]="isTopPosition? 'te-popup te-desktop te-border-bottom' : 'te-popup te-desktop te-border-top'" [ngStyle]="{'top': toolbarPositionTop+'px','z-index': 5} ">
+    <span *ngIf="isTopPosition" class="te-arrow" style="margin-left: -5px;top: 43px;transform: rotate(180deg);"></span>
+    <div class="te-buttons">
+        <button id="imageReplace-2" type="button" tabindex="-1" role="button" title="Replace" class="te-command te-btn te-btn-font_awesome" data-cmd="imageReplace" data-popup="true">
+            <i class="fa fa-exchange" aria-hidden="true"></i>
+            <span class="te-sr-only">Replace</span>
+        </button>
+
+        <div class="child-holder">
+            <button id="imageAlign-2" type="button" (click)="toggleAlignDropdown()"  [class]="alignStatus? alignToggleClass: 'te-command te-btn te-dropdown te-selection'" title="Align" class="te-command te-btn te-dropdown te-btn-font_awesome" >
+                <i class="fa fa-align-justify" aria-hidden="true"></i>
+                <span class="te-sr-only">Align</span>
+            </button>
+            <div id="dropdown-menu-align-2" class="te-dropdown-menu alignText" role="listbox" aria-labelledby="align">
+                <div class="te-dropdown-wrapper" role="presentation">
+                    <div class="te-dropdown-content" role="presentation">
+                        <ul class="te-dropdown-list" role="presentation">
+                            <li role="presentation" (click)="alignLeft()">
+                                <a class="te-command te-title" tabindex="-1" role="option" data-cmd="imageAlign" data-param1="left" title="Align Left">
+                                    <i class="fa fa-align-left" aria-hidden="true"></i>
+                                    <span class="te-sr-only">Align Left</span>
+                                </a>
+                            </li>
+                            <li role="presentation" (click)="alignCenter()">
+                                <a class="te-command te-title" tabindex="-1" role="option" data-cmd="imageAlign" data-param1="center" title="None">
+                                    <i class="fa fa-align-justify" aria-hidden="true"></i>
+                                    <span class="te-sr-only">None</span>
+                                </a>
+                            </li>
+                            <li role="presentation" (click)="alignRight()">
+                                <a class="te-command te-title" tabindex="-1" role="option" data-cmd="imageAlign" data-param1="right" title="Align Right">
+                                    <i class="fa fa-align-right" aria-hidden="true"></i>
+                                    <span class="te-sr-only">Align Right</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="child-holder">
+            <button id="imageCaption-2" type="button" tabindex="-1" (click)="captionToggle()" role="button" title="Image Caption" [class]="captionStatus? captionToggleClass: 'te-command te-btn te-dropdown te-selection'"  data-cmd="imageCaption">
+                <i class="fa fa-commenting" aria-hidden="true"></i>
+                <span class="te-sr-only">Image Caption</span>
+            </button>
+            <input (keyup.ENTER)="caption($event)" class="te-dropdown-menu" type="text" id="caption-url" placeholder="Image Caption">
+        </div>
+        <button id="imageRemove-2" type="button" tabindex="-1" (click)="delete()" role="button" title="Remove" class="te-command te-btn te-btn-font_awesome" data-cmd="imageRemove">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            <span class="te-sr-only">Remove</span>
+        </button>
+        <div class="te-separator te-vs te-hidden" role="separator" aria-orientation="vertical"></div>
+        <button id="imageLink-2" type="button" tabindex="-1" role="button" (click)="link(undefined)" title="Insert Link" class="te-command te-btn te-btn-font_awesome" data-cmd="imageLink" data-popup="true">
+            <i class="fa fa-link" aria-hidden="true"></i>
+            <span class="te-sr-only">Insert Link</span>
+        </button>
+        <div *ngIf="linkAvailability!=='#'" style="display: inline-block;">
+            <button id="linkOpen-2" type="button" tabindex="-1" role="button" (click)="openlink()" title="Open Link" class="te-command te-btn te-btn-font_awesome te-hidden" data-cmd="linkOpen">
+                <i class="fa fa-external-link" aria-hidden="true"></i>
+                <span class="te-sr-only">Open Link</span>
+            </button>
+            <div class="child-holder">
+                <button id="linkEdit-2" type="button" tabindex="-1" role="button" title="Edit Link"  (click)="toggleLinkInput()" [class]="editLinkStatus? altToggleClass: 'te-command te-btn te-dropdown te-selection'"  data-cmd="linkEdit" data-popup="true">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    <span class="te-sr-only">Edit Link</span>
+                </button>
+                <input (keyup.ENTER)="link($event)" class="te-dropdown-menu" type="text" id="image-link-layer-text" placeholder="Alternative Text">
+            </div>
+            <button id="linkRemove-2" type="button" tabindex="-1" role="button" (click)="unlink()" title="Unlink" class="te-command te-btn te-btn-font_awesome te-hidden" data-cmd="linkRemove">
+                <i class="fa fa-unlink" aria-hidden="true"></i>
+                <span class="te-sr-only">Unlink</span>
+            </button>
+        </div>
+        <!--<div class="te-separator te-hs" role="separator" aria-orientation="horizontal"></div>-->
+        <div class="child-holder">
+            <button id="imageDisplay-2" type="button" tabindex="-1" role="button" (click)="toggleDisplayDropdown()" [class]="displayStatus? displayToggleClass: 'te-command te-btn te-dropdown te-selection'"  title="Display" class="te-command te-btn te-dropdown te-btn-font_awesome" data-cmd="imageDisplay">
+                <i class="fa fa-star" aria-hidden="true"></i>
+                <span class="te-sr-only">Display</span>
+            </button>
+            <div id="dropdown-menu-imageDisplay-2" class="te-dropdown-menu" role="listbox" aria-labelledby="imageDisplay-2" aria-hidden="true">
+                <div class="te-dropdown-wrapper" role="presentation">
+                    <div class="te-dropdown-content" role="presentation">
+                        <ul class="te-dropdown-list" role="presentation">
+                            <li role="presentation" (click)="inline()">
+                                <a class="te-command" tabindex="-1" role="option" data-cmd="imageDisplay" data-param1="inline" title="Inline">Inline</a>
+                            </li>
+                            <li role="presentation" (click)="block()">
+                                <a class="te-command" tabindex="-1" role="option" data-cmd="imageDisplay" data-param1="block" title="Break Text">Break Text</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="child-holder">
+            <button id="imageStyle-2" type="button" tabindex="-1" role="button"  (click)="toggleStyleDropdown()" [class]="styleStatus? styleToggleClass: 'te-command te-btn te-dropdown te-selection'"  title="Style" class="te-command te-btn te-dropdown te-btn-font_awesome" data-cmd="imageStyle">
+                <i class="fa fa-magic" aria-hidden="true"></i>
+                <span class="te-sr-only">Style</span>
+            </button>
+            <div id="dropdown-menu-imageStyle-2" class="te-dropdown-menu" role="listbox" aria-labelledby="imageStyle-2" aria-hidden="true">
+                <div class="te-dropdown-wrapper" role="presentation">
+                    <div class="te-dropdown-content" role="presentation">
+                        <ul class="te-dropdown-list" role="presentation">
+                            <li role="presentation"  (click)="round()">
+                                <a class="te-command" tabindex="-1" role="option" data-cmd="imageStyle" data-param1="te-rounded">Rounded</a>
+                            </li>
+                            <li role="presentation" (click)="border()">
+                                <a class="te-command" tabindex="-1" role="option" data-cmd="imageStyle" data-param1="te-bordered">Bordered</a>
+                            </li>
+                            <li role="presentation" (click)="shadow()">
+                                <a class="te-command" tabindex="-1" role="option" data-cmd="imageStyle" data-param1="te-shadow">Shadow</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="child-holder">
+            <button id="imageAlt-2" type="button" tabindex="-1" role="button" (click)="altTextToggle()" [class]="altStatus? altToggleClass: 'te-command te-btn te-dropdown te-selection'" title="Alternative Text" class="te-command te-btn te-btn-font_awesome" data-cmd="imageAlt" data-popup="true">
+                <i class="fa fa-info" aria-hidden="true"></i>
+                <span class="te-sr-only">Alternative Text</span>
+            </button>
+            <input (keyup.ENTER)="altText($event)" class="te-dropdown-menu" type="text" id="image-alt-layer-text" placeholder="Alternative Text">
+        </div>
+        <div class="child-holder">
+            <button id="imageSize-2" type="button" tabindex="-1" role="button" (click)="resizeToggle()" [class]="resizeStatus? resizeToggleClass: 'te-command te-btn te-dropdown te-selection'"  title="Change Size" class="te-command te-btn te-btn-font_awesome" data-cmd="imageSize" data-popup="true">
+                <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+                <span class="te-sr-only">Change Size</span>
+            </button>
+            <div class="te-dropdown-menu te-image-size-layer te-layer" id="te-image-size-layer-2">
+                <div class="te-image-group">
+                    <div class="te-input-line"><input id="te-image-size-layer-width-2" type="text" name="width" placeholder="Width" tabindex="1"
+                                                      dir="auto" class="te-not-empty"></div>
+                    <div class="te-input-line"><input id="te-image-size-layer-height2" type="text" name="height" placeholder="Height" tabindex="1"
+                                                      dir="auto"></div>
+                </div>
+                <div class="te-action-buttons" (click)="resize()">
+                    <button type="button" class="te-command te-submit" data-cmd="imageSetSize" tabindex="2" role="button">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span *ngIf="isBottomPosition" class="te-arrow" style="margin-left: -5px;"></span>
+</div>

@@ -1,0 +1,27 @@
+<div class="section" id="{{section.uuid}}" [ngClass]="{'full': opened, 'active': active}" (click)="onSectionClick.emit({section: section, opened: opened, element: $event});">
+  <div class="section__header">
+    <div class="section__actions">
+      <div class="section__dropdown" (mousedown)="toggleSection($event)"></div>
+    </div>
+    <input class="section__title" type="text" #sectionTitle value="{{extractContent(section.title)}}" placeholder="Untitled section" (keyup.enter)="updateSectionTitle($event, sectionTitle.value);" />
+
+    <!-- <div class="section__title">{{section.title || 'Untitled section'}}</div> -->
+    <div class="section__dropdown-menu icon-more-vertical" (click)="openDeletePopup = !openDeletePopup" (mouseleave)="openDeletePopup = false">
+      <div class="section__dropdown-menu-content" [ngClass]="{'action': openDeletePopup}">
+        <div (click)="deleteSection($event)" class="section__dropdown-menu-item delete">
+          <i class="far fa-trash-alt"></i>Delete</div>
+      </div>
+    </div>
+    <ng-content select="[handle]"></ng-content>
+  </div>
+  <div class="section__items">
+    <div class="section__scene" id="{{subsection.uuid}}" *ngFor="let subsection of section.subSections; trackBy:trackByFn">
+      <input type="text" value="{{subsection.title}}" id="{{subsection.uuid}}" placeholder="Untitled" (click)="subSectionClick($event)" (keyup.enter)="updateSubsectionTitle($event, subsection.uuid)">
+      <div class="section__scene-actions">
+        <div (click)="deleteSubsection($event, subsection)" class="section__scene-action icon-trash-2"></div>
+      </div>
+    </div>
+    <div *ngIf="opened" class="section__add-scene" (click)="addSubsection($event)">Add scene</div>
+  </div>
+  <div class="ideas__item-line"></div>
+</div>

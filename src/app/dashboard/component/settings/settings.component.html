@@ -1,0 +1,217 @@
+<div class="settings">
+  <div class="settings__profile">
+    <form class="settings__user-block" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="settings__block-header">
+        <div class="settings__block-title">Profile</div>
+        <div class="settings__logout" (click)="logOut()">Log out</div>
+      </div>
+      <div class="settings__avatar" [ngClass]="{'error': avatarError}">
+        <img src="{{userPhotoUrl ? userPhotoUrl : '../../../../../assets/images/user.png'}}" alt="Profile photo">
+        <div *ngIf="avatarUploading" class="loader"></div>
+        <input style="display: none" type="file" (change)="onAvatarSelect($event)" accept="image/x-png,image/gif,image/jpeg" #fileInput>
+        <div *ngIf="!avatarUploading" class="settings__avatar-hover icon-camera" (click)="fileInput.click(); avatarError = false;"></div>
+      </div>
+      <div class="error" *ngIf="avatarError">Image too big! Max size: 1mb.</div>
+      <input type="text" formControlName="name" class="settings__user-input settings__user-input_name" [ngClass]="{'invalid': submited && profileFormState.name.errors }"
+        placeholder="Name" />
+      <tabs id="settings-tabs">
+        <tab tabTitle="Email" class="email">
+          <input type="email" formControlName="email" class="settings__user-input email" [ngClass]="{'invalid': submited && profileFormState.email.errors }"
+            placeholder="Email" />
+        </tab>
+
+        <tab tabTitle="Password" class="password">
+          <div *ngIf="user">
+            <input id="oldPassword" type="password" formControlName="oldPassword" class="settings__user-input" [ngClass]="{'invalid': submited && profileFormState.oldPassword.errors }"
+              placeholder="Current password" style="border-radius: 0; border-right: 5px solid #000000" />
+            <input id="newPassword" type="password" formControlName="password" class="settings__user-input" [ngClass]="{'invalid': submited && profileFormState.password.errors }"
+              placeholder="New password" />
+          </div>
+        </tab>
+      </tabs>
+      <div class="settings__subscription-footer no-mt">
+        <button id="profileChange" [disabled]="!profileForm.dirty" class="settings__button" [ngClass]="{'hidden': updated}">{{loading ? 'Saving...' : 'Save'}}</button>
+        <div id="profile_updated" *ngIf="!profileError" class="settings__profile-update" [ngClass]="{'active': updated}">Profile updated!</div>
+        <div *ngIf="profileError" class="settings__profile-update error" [ngClass]="{'active': updated}">{{profileErrorMsg}}
+        </div>
+      </div>
+    </form>
+    <div class="settings__user-block">
+      <div *ngIf="paymentLoader" class="loader main-loader"></div>
+      <div *ngIf="!paymentLoader">
+        <div class=" settings__block-header ">
+          <div class="settings__block-title ">Subscription</div>
+        </div>
+
+        <div class="settings__subscription-status ">Status -
+          <span *ngIf="status=='trial' ">Free Trial</span>
+          <span *ngIf="status=='active' ">Member</span>
+          <span *ngIf="status=='inactive'"> Inactive</span>
+          <span *ngIf="status==='unsubscribe'"> Unsubscribed </span>
+        </div>
+
+        <div class="settings__subscription " *ngIf="status == 'trial' && !showPaymentForm">
+
+          <div class="settings__subscription-text ">Your
+            <span>10 day free-trial</span> period is coming to an end in {{expDays}} days. Sign up to continue your journey!</div>
+          <div class="settings__subscription-price ">
+            <span>$</span>10/mo</div>
+          <div class="settings__subscription-button " (click)="showPaymentForm=true ">Continue Writing</div>
+          <div class="settings__subscription-privacy ">By clicking ‘Continue Writing’ you agree to the
+            <span (click)="openPolicy( 'service') ">Terms of Service</span> and
+            <span (click)="openPolicy( 'terms') ">Privacy Policy</span>
+          </div>
+        </div>
+        <form [formGroup]="cardForm" (ngSubmit)="onPaymentSubmit()" class="settings__subscription " *ngIf="showPaymentForm">
+          <div class="settings__payment-info" *ngIf="status === 'active'">
+            <div (click)="showInfo()">
+              <span>Payment Information</span>
+            </div>
+          </div>
+          <div *ngIf="status !== 'active'">
+            <div id="cardForm">
+              <div class="exp-date">Your subscription {{messageExpCont}} at
+                <span>{{expDate | date}}</span>
+              </div>
+              <input autocomplete="cc-number " type="tel " name="cardnumber" formControlName="cardNumber" class="settings__input" [ngClass]="{ ' invalid': cardSubmited && cardFormState && cardFormState.cardNumber.errors } "
+                placeholder="Credit card number " maxlength="22 " (keypress)="maskCardNumber($event)" (change)="maskCardNumber($event)"
+              />
+              <div class="row ">
+                <div class="col ">
+                  <input autocomplete="cc-exp " type="text " #cardDateVar name="cc-exp " id="testCard" formControlName="cardDate" class="settings__input date"
+                    [ngClass]="{ 'invalid': cardSubmited && cardFormState && cardFormState.cardDate.errors } " placeholder="MM/YYYY "
+                    maxlength="7 " (change)="maskCardDate($event)" />
+                </div>
+                <div class="col ">
+                  <input autocomplete="cc-csc " type="text " name="cc-csc " formControlName="cardCvc" class="settings__input cvc" [ngClass]="{ 'invalid': cardSubmited && cardFormState.cardCvc.errors } "
+                    placeholder="CVC " maxlength="4 " (keypress)="maskCardCvc($event) " (change)="maskCardCvc($event)" />
+                  <div class="cvc-info ">?
+                    <div class="cvc-info__content "></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="cardError" class="error " *ngIf="cardError ">{{cardError}}</div>
+            <div class="settings__subscription-footer subscription ">
+              <button id="updatePayment" class="settings__button ">
+                <div *ngIf="paymentLoading " class="loader "></div>
+                <span *ngIf="!paymentLoading ">Update Now</span>
+              </button>
+            </div>
+            <div class="settings__profile-update" [ngClass]="{ 'active': paymentUpdated} ">{{paymentMessage}}</div>
+            <div id="paymentError" class="error">{{paymentError}}</div>
+          </div>
+        </form>
+        <div *ngIf="unsubscribeMessage && !cardInfoShow" class="message-info">
+          {{subMessage}}
+        </div>
+
+        <div *ngIf="!showProjectInfo">
+          <div *ngIf="!cardInfoShow">
+            <div class="billing-history-active" (click)="showBillingHistory = !showBillingHistory">
+              <span>Billing History</span>
+            </div>
+            <form [formGroup]="cartInfo" (ngSubmit)="onPaymentSubmit()" class="settings__subscription update-info" *ngIf="status=='active' && !showProjectInfo">
+              <div>
+                <div class="settings__payment-info right">
+                  <!-- <div (click)="showInfo()">
+                  <span>Update Information</span>
+                </div> -->
+                </div>
+                <input autocomplete="cc-number " [attr.disabled]="true" type="tel " name="cardnumber " formControlName="cardNumber" class="settings__input
+            " placeholder="Credit card number " maxlength="22 " />
+              </div>
+              <div class="error " *ngIf="cardError ">{{cardError}}</div>
+              <div class="exp-date">Your subscription will automatically update at
+                <span>{{expDate | date}}</span>
+              </div>
+              <div class="settings__subscription-footer subscription sub-cancel" *ngIf="!showCancelSubPopup">
+                <div class="settings__subscription-cancel ">
+                  <div (click)="changeSubscription()" class="credit-card-info">Change Credit Card Info </div>
+                  <span (click)="showCancelSubPopup = true">Cancel</span> your membership.</div>
+              </div>
+              <!-- cancelSubscription -->
+              <div class="settings__profile-update " [ngClass]="{ 'active': paymentUpdated} ">{{paymentMessage}}</div>
+              <div class="ideas">
+                <div class="board__delete-popup" [ngClass]="{'show-delete-popup': showCancelSubPopup}">
+                  <div class="board__delete-popup-title">Are you sure you want cancel your subscription ?</div>
+                  <div class="board__delete-popup-controls">
+                    <button class="settings__button white" (click)="showCancelSubPopup = false;">No</button>
+                    <button class="settings__button white" (click)="cancelSubscription()">
+                      <div *ngIf="showCancelLoader" class="loader"></div>
+                      <div *ngIf="!showCancelLoader"> Yes </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div *ngIf="cardInfoShow">
+            <form [formGroup]="cardForm" (ngSubmit)="onPaymentSubmit()" class="settings__subscription " *ngIf="showPaymentForm">
+              <div *ngIf="status === 'active'">
+                <div>
+                  <div class="exp-date">Your subscription {{messageExpCont}} at
+                    <span>{{expDate | date}} </span> and automatically update by new card
+                  </div>
+                  <input autocomplete="cc-number " type="tel " name="cardnumber" formControlName="cardNumber" class="settings__input" [ngClass]="{ ' invalid': cardSubmited && cardFormState && cardFormState.cardNumber.errors } "
+                    placeholder="Credit card number " maxlength="22 " (keypress)="maskCardNumber($event)" (change)="maskCardNumber($event)"
+                  />
+                  <div class="row ">
+                    <div class="col ">
+                      <input autocomplete="cc-exp " type="text " #cardDateVar name="cc-exp " id="testCard" formControlName="cardDate" class="settings__input date"
+                        [ngClass]="{ 'invalid': cardSubmited && cardFormState && cardFormState.cardDate.errors } " placeholder="MM/YYYY "
+                        maxlength="7 " (change)="maskCardDate($event)" />
+                    </div>
+                    <div class="col ">
+                      <input autocomplete="cc-csc " type="text " name="cc-csc " formControlName="cardCvc" class="settings__input cvc" [ngClass]="{ 'invalid': cardSubmited && cardFormState.cardCvc.errors } "
+                        placeholder="CVC " maxlength="4 " (keypress)="maskCardCvc($event) " (change)="maskCardCvc($event)"
+                      />
+                      <div class="cvc-info ">?
+                        <div class="cvc-info__content "></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="error " *ngIf="cardError ">{{cardError}}</div>
+                <div class="settings__subscription-footer subscription ">
+                  <button class="settings__button " (click)="udpateCardFunction()">
+                    <div *ngIf="paymentLoading " class="loader "></div>
+                    <span *ngIf="!paymentLoading ">Update Now</span>
+                  </button>
+                </div>
+                <div class="settings__profile-update" [ngClass]="{ 'active': paymentUpdated} ">{{paymentMessage}}</div>
+                <div class="error">{{paymentError}}</div>
+              </div>
+            </form>
+            <div *ngIf="unsubscribeMessage && cardInfoShow" class="message-info">
+              {{subMessage}}
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="settings__user-block">
+      <div class="settings__block-header">
+        <div class="settings__block-title">Contact</div>
+      </div>
+      <div class="settings__contact-text">Email us at</div>
+      <a href="mailto:info@squibler.io" class="settings__contact-email">info@squibler.io</a>
+    </div>
+
+
+    <div class="settings__user-block" *ngIf="showBillingHistory">
+      <div class="settings__block-header">
+        <div class="settings__block-title">Billing History</div>
+      </div>
+      <div class="settings__contact-text"> 11.09.2018 paid 2.50$ </div>
+      <div class="settings__contact-text"> 11.10.2018 paid 2.50$ </div>
+      <div class="settings__contact-text"> 11.11.2018 paid 2.50$ </div>
+    </div>
+
+
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.wysiwyg-editor {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    &__content {
+        width: 21cm;
+        height: 9.7cm;
+        border: 1px solid black;
+        margin: 0 auto;
+
+    }
+}

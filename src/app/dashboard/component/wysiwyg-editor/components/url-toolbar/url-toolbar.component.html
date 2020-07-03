@@ -1,0 +1,43 @@
+<div id="urlToolbar" class="te-popup te-desktop te-border-bottom" [ngStyle]="{'top': toolbarPositionTop+'px','left': toolbarPositionLeft+'px','z-index': 5} ">
+    <span class="te-arrow" style="margin-left: -5px;top: 43px;transform: rotate(180deg);"></span>
+    <div class="te-buttons">
+        <button id="linkOpen-1" type="button" tabindex="-1" (click)="openNewTab()" role="button" title="Open Link" class="te-command te-btn te-btn-font_awesome" data-cmd="linkOpen"><i class="fa fa-external-link" aria-hidden="true"></i><span class="te-sr-only">Open Link</span></button>
+        <button id="linkStyle-1" type="button" tabindex="-1" (click)="onLinkStyleClick()" role="button" aria-controls="dropdown-menu-linkStyle-1" aria-expanded="false" aria-haspopup="true" title="Style" [ngClass]="isLinkStyleActive ? 'te-command te-btn te-dropdown te-btn-font_awesome te-active' : 'te-command te-btn te-dropdown te-btn-font_awesome'" data-cmd="linkStyle"><i class="fa fa-magic" aria-hidden="true"></i><span class="te-sr-only">Style</span></button>
+        <div id="dropdown-menu-linkStyle-1" class="te-dropdown-menu" role="listbox" aria-labelledby="linkStyle-1" aria-hidden="true" style="left: 40px; top: 32px;">
+            <div class="te-dropdown-wrapper" role="presentation">
+                <div class="te-dropdown-content" role="presentation">
+                    <ul class="te-dropdown-list" role="presentation">
+                        <li role="presentation"><a (click)="onLinkStyleGreenClick()" [ngClass]="isGreenActive ? 'te-command te-active' : 'te-command'" tabindex="-1" role="option" data-cmd="linkStyle" data-param1="te-green" aria-selected="true">Green</a></li>
+                        <li role="presentation"><a (click)="onLinkStyleThickClick()" [ngClass]="isThickActive ? 'te-command te-active' : 'te-command'" tabindex="-1" role="option" data-cmd="linkStyle" data-param1="te-strong" aria-selected="false">Thick</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <button id="linkEdit-1" type="button" tabindex="-1" (click)="openUrlEditor()" role="button" title="Edit Link" class="te-command te-btn te-btn-font_awesome" data-cmd="linkEdit" data-popup="true"><i class="fa fa-edit" aria-hidden="true"></i><span class="te-sr-only">Edit Link</span></button>
+        <button id="linkRemove-1" type="button" tabindex="-1" (click)="unlink()" role="button" title="Unlink" class="te-command te-btn te-btn-font_awesome" data-cmd="linkRemove"><i class="fa fa-unlink" aria-hidden="true"></i><span class="te-sr-only">Unlink</span></button>
+    </div>
+    <div [ngClass]="editActive ? 'te-link-insert-layer te-layer te-active' : 'te-link-insert-layer te-layer'" id="te-link-insert-layer-16">
+        <div class="te-input-line">
+            <input id="te-link-insert-layer-url-16" #urlLink name="href" type="text" class="te-link-attr" placeholder="URL" tabindex="1" dir="auto">
+            <label for="te-link-insert-layer-url-16">URL</label>
+        </div>
+        <div class="te-input-line">
+            <input id="te-link-insert-layer-text-16" #urlText name="text" type="text" class="te-link-attr" placeholder="Text" tabindex="2" dir="auto">
+            <label for="te-link-insert-layer-text-16">Text</label>
+        </div>
+        <div class="te-checkbox-line">
+                    <span class="te-checkbox">
+                        <input name="target" #urlBlank class="te-link-attr te-not-empty" data-checked="_blank" type="checkbox" id="te-link-target-16" tabindex="3" dir="auto">
+                        <span>
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="10" viewBox="0 0 32 32">
+                                <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" fill="#FFF"></path>
+                            </svg>
+                        </span>
+                    </span>
+            <label for="te-link-target-16">Open in new tab</label>
+        </div>
+        <div class="te-action-buttons">
+            <button class="te-command te-submit" role="button" (click)="onUrlInsert()" data-cmd="linkInsert" href="#" tabindex="4" type="button">Update</button>
+        </div>
+    </div>
+</div>

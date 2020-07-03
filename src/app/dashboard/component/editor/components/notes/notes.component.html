@@ -1,0 +1,9 @@
+<div style="height: 100%">
+  <div class="editor editor_notes">
+    <form [formGroup]="froalaForm">
+      <input #noteName type="text" name="title" formControlName="title" class="editor__input" placeholder="Untitled Idea" />
+
+      <textarea formControlName="description" [froalaEditor]="options" [froalaModel]="editorContent" placeholder="Start your thoughts here...">Hello, Froala!</textarea>
+    </form>
+  </div>
+</div>

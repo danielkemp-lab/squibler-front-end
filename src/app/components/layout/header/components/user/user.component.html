@@ -1,0 +1,9 @@
+<!-- <button class="logout-button" [ngClass]="{'header-button' : full }" (click)="logOut()"> LogOut</button> -->
+<div class="header__user">
+  <div class="header__user-photo">
+    <img src="{{userPhotoUrl ? userPhotoUrl : '../../../../../../../../assets/images/user.png'}}" alt="Profile photo">
+
+  </div>
+
+  <div class="header__user-name">{{name ? name : 'Profile'}}</div>
+</div>

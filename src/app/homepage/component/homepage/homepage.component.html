@@ -1,0 +1,399 @@
+<div>
+    <script>
+        var test;
+        !function () {
+            var analytics = window.analytics = window.analytics || [];
+            if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
+                analytics.invoked = !0;
+                analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "once", "off", "on"];
+                analytics.factory = function (t) {
+                    return function () {
+                        var e = Array.prototype.slice.call(arguments);
+                        e.unshift(t);
+                        analytics.push(e);
+                        return analytics
+                    }
+                };
+                for (var t = 0; t < analytics.methods.length; t++) {
+                    var e = analytics.methods[t];
+                    analytics[e] = analytics.factory(e)
+                }
+                analytics.load = function (t, e) {
+                    var n = document.createElement("script");
+                    n.type = "text/javascript";
+                    n.async = !0;
+                    n.src = "https://cdn.segment.com/analytics.js/v1/" + t + "/analytics.min.js";
+                    var a = document.getElementsByTagName("script")[0];
+                    a.parentNode.insertBefore(n, a);
+                    analytics._loadOptions = e
+                };
+                analytics.SNIPPET_VERSION = "4.1.0";
+                analytics.load("2e75niFI0wCFJYBaJgh4lSW2jHSQtZfw");
+                analytics.identify(localStorage.getItem('userId'));
+            }
+        }();
+    </script>
+    <script type="text/javascript"> var _iub = _iub || [];
+    _iub.csConfiguration = {
+        "lang": "en",
+        "siteId": 1411530,
+        "cookiePolicyId": 69329368,
+        "banner": {"slideDown": false, "applyStyles": false, "textColor": "black", "backgroundColor": "white"}
+    }; </script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cookie_solution/safemode/iubenda_cs.js" charset="UTF-8"
+            async></script>
+    <script>
+        $FPROM.trackSignup({
+                email: $('input[type="email"]').val()
+            },
+            function () {
+
+            });
+			
+			
+	   
+	   
+
+    </script>
+	
+    <div class="landing">
+
+        <nav class="navbar navbar-expand-md mb-4 Navbar" style="margin-bottom:0 !important;" id="my-homepage-navbar">
+            <div class="container">
+                <a class="navbar-brand Logo__Main" href="https://www.squibler.io">Squibler</a>
+                <button class="navbar-toggler" id="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                        aria-controls="navbarCollapse"
+                        aria-expanded="false" aria-label="Toggle navigation" onClick="document.getElementById('navbarCollapse').classList.add('open');" >
+                    <img src="https://storage.googleapis.com/squibler_bucket/main/img/mobmenu.png" alt="menu"/>
+                </button>
+                <div id="navbarCollapse" class="navbar-collapse justify-content-end collapse">
+                    <button class="navbar-toggler close collapsed" id="navbar-toggler-inner" type="button" data-toggle="collapse"
+                            data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                            aria-label="Toggle navigation" onClick="document.getElementById('navbarCollapse').classList.remove('open');" >
+                        <img src="https://storage.googleapis.com/squibler_bucket/main/img/mobmenu.png" alt="menu">
+                    </button>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item">
+                            <a class="nav-link Navbar__Link " href="https://www.squibler.io/blog ">Blog</a>
+                        </li>
+
+
+                        <li class="nav-item  about">
+                            <a class="nav-link Navbar__Link " href="https://www.squibler.io/pricing ">Pricing</a>
+                        </li>
+
+                        
+                        <li class="nav-item mob ">
+                            <a class="nav-link Navbar__Link " [routerLink]="['/auth/login']">Login</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <a class="login-button desk" [routerLink]="['/auth/login']">Login</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+            <section class="landing__section top">
+                <div class="landing__container">
+                    <div id="title-boarding-container" class="landing__container_left">
+                        <app-header-boarding (onStart)="true"></app-header-boarding>
+                    </div>
+                </div>
+            </section>
+            <section class="landing__section feedback">
+                <div class="landing__container">
+                    <div class="landing__title sm">See Why 5000+ Authors Use this Book Writing Software</div>
+                    <div class="landing__feedback-items">
+                        <div class="landing__feedback-item">
+                            <div class="landing__feedback-item-content">
+                                I love how I can split screens to organize my notes, then track my progress using visual
+                                note
+                                cards. It’s like having an
+                                organized cabinet file for my book.
+                                <div class="landing__feedback-item-photo left"></div>
+                            </div>
+                            <div class="landing__feedback-item-name">Jeniffer Miller</div>
+                            <div class="landing__feedback-item-info">— 3X Best-Selling Author</div>
+                        </div>
+                        <div class="landing__feedback-item">
+                            <div class="landing__feedback-item-content">
+                                Using the grammar checker feature has made my editor happier. Plus, I can instantly
+                                share my
+                                work with him using Squibler’s
+                                sharing feature.
+                                <div class="landing__feedback-item-photo middle"></div>
+                            </div>
+                            <div class="landing__feedback-item-name">Josh Fechter</div>
+                            <div class="landing__feedback-item-info">– 2X Top Quora Writer, 5X Author</div>
+                        </div>
+                        <div class="landing__feedback-item">
+                            <div class="landing__feedback-item-content">
+                                Squibler helped me write my book in 30 days. It’s like having a coach every step of the
+                                way
+                                until you finish your book.
+                                <div class="landing__feedback-item-photo right"></div>
+                            </div>
+                            <div class="landing__feedback-item-name">Laura Walker</div>
+                            <div class="landing__feedback-item-info">Fiction Storyteller</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="landing__section features">
+                <div class="landing__container">
+                    <div class="landing__title sm">Discover how to write a book faster with this book writing software<br> 
+                    </div>
+                    <div class="landing__feature-item left item-1">
+                        <div class="landing__feature-item-title"> Ideate</div>
+                        <div class="landing__feature-item-text">Store all your ideas without ever losing them, then
+                            filter
+                            by
+                            tags. Remember, every book starts with a sentence.
+                            Every sentence starts with an idea.
+                        </div>
+                        <img class="mob_img" style="box-shadow: 0px 0px 4px rgba(0,0,0,0.2);"
+                             src="https://storage.googleapis.com/squibler_bucket/rectangle-3_2@2x.png">
+                        <div class="landing__feature-item-separator"></div>
+                    </div>
+                    <div class="landing__feature-item right item-1">
+                        <div class="landing__feature-item-title">Outline Your Book</div>
+                        <div class="landing__feature-item-text">Store all your chapters, scenes, and notes safely. Then,
+                            drag
+                            and drop them into the right place.
+                        </div>
+                        <img class="mob_img" src="https://storage.googleapis.com/squibler_bucket/rectangle-3@2x.png">
+                        <div class="landing__feature-item-separator"></div>
+                    </div>
+
+                    <div class="landing__feature-item left export">
+                        <div class="landing__feature-item-title">Publish Your Book</div>
+                        <div class="landing__feature-item-text">Share your book with an editor. When it’s ready, export
+                            and
+                            preview your files for Kindle, PDF, or print
+                            while keeping perfect image resolution.
+                        </div>
+                        <img class="mob_img" src="https://www.squibler.io/assets/images/feature-3.png">
+                        <div class="landing__feature-item-separator"></div>
+                    </div>
+                    <div class="landing__partners">
+                        <div class="landing__partner landing__partner_forbes"></div>
+                        <div class="landing__partner landing__partner_mashable"></div>
+                        <div class="landing__partner landing__partner_huffpost"></div>
+                        <div class="landing__partner landing__partner_nyt"></div>
+                        <div class="landing__partner landing__partner_inc"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="landing__section webfootertop">
+                <div class="leaf"></div>
+                <div class="content">
+                    <app-footer-boarding></app-footer-boarding>
+                </div>
+            </section>
+    </div>
+    <section class="landing__section copyright webfooter">
+	  <div class="container">
+		<div class="row">
+		<div class="col-sm-4">
+        <img src="https://storage.googleapis.com/squibler_bucket/main/img/logo-footer.png " class="Footer__Brand " />
+		</div>
+		<div class="col-sm-4">
+			<div class="landing__container" style="text-align:center;margin-top:15px;">
+				
+				<a href="https://www.iubenda.com/privacy-policy/69329368/cookie-policy"
+				   class="iubenda-white no-brand iubenda-embed " title="Cookie Policy">Cookie Policy</a>&nbsp;&nbsp;
+				<a href="https://www.iubenda.com/privacy-policy/69329368" class="iubenda-white no-brand iubenda-embed "
+				   title="Privacy Policy">Privacy Policy</a>&nbsp;&nbsp;
+				<a href="https://www.squibler.io/terms-of-service" class="">Terms Of Service</a>
+			</div>
+		
+		</div>
+		<div class="col-sm-4">
+        <p class="Footer__Copyright">Copyright © 2019 Squibler, All right reserved</p>
+		</div>
+		</div> <!-- row -->
+		</div>
+    </section>
+	
+    <script type="text/javascript">(function (w, d) {
+        var loader = function () {
+            var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0];
+            s.src = "https://cdn.iubenda.com/iubenda.js";
+            tag.parentNode.insertBefore(s, tag);
+        };
+        if (w.addEventListener) {
+            w.addEventListener("load", loader, false);
+        } else if (w.attachEvent) {
+            w.attachEvent("onload", loader);
+        } else {
+            w.onload = loader;
+        }
+    })(window, document);
+	window.onscroll = function() {myFunction()};
+
+// Get the header
+var header = document.getElementById("Navbar");
+
+// Get the offset position of the navbar
+var sticky = header.offsetTop;
+
+// Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+    </script>
+	 
+    <style>
+        .navbar-toggler {
+            display:none;
+        }
+        .mob {
+                display:none;
+        }
+		
+        .boarding[_ngcontent-c2] {
+            background: url(https://storage.googleapis.com/squibler_bucket/topbanner.png) no-repeat right bottom;
+            width: 100%;
+            background-size: 58%;
+            margin-top: 30px;
+        }
+		.boarding[_ngcontent-c2][_ngcontent-c2] {
+				background: url(https://storage.googleapis.com/squibler_bucket/topbanner.png) right 9%/58% no-repeat;
+				width: 100%;
+				margin-top: 30px;
+		}
+
+        @media only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+            .boarding[_ngcontent-c2] {
+                background: url(https://storage.googleapis.com/squibler_bucket/topbanner@2x.png) no-repeat right top;
+                width: 100%;
+                background-size: 58%;
+                margin-top: 30px;
+            }
+        }
+
+        .boarding__container[_ngcontent-c2] {
+            max-width: 40%;
+            padding-top: 20px;
+            left: 0;
+            -webkit-transition: width 0.1s; /* Safari */
+            transition: width 0.1s;
+        }
+		.nav-item.about {
+			padding-right:1.5rem;
+		}
+		.webfootertop .boarding__text[_ngcontent-c3] {
+			text-align:center;
+		}
+        @media (max-width: 1300px) {
+            .boarding[_n
+			gcontent-c2][_ngcontent-c2] {
+				background-size: 10%/58% !important;
+				margin-top: 30px;
+            }
+
+            .boarding__container[_ngcontent-c2] {
+                max-width: 33%;
+
+            }
+        }
+
+        @media (max-width: 999px) {
+            .navbar-toggler {
+                display:block;
+            }
+			.nav-item.about {
+				padding-right:0rem;
+			}
+            .desk {
+                display:none;
+            }
+            .mob {
+                display:block;
+            }
+            .boarding[_ngcontent-c2] {
+                margin-top: 0;
+                background-size: 75%;
+            }
+
+            .boarding__container[_ngcontent-c2] {
+                max-width: 100%;
+                padding-top: 0px;
+                left: auto;
+            }
+        }
+
+        .boarding[_ngcontent-c2].started {
+            background: none;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .boarding[_ngcontent-c2].started .boarding__container[_ngcontent-c2] {
+            width: 100%;
+            max-width: 650px;
+            padding-top: 20px;
+            left: auto;
+            text-align: center;
+            -webkit-transform: none;
+            transform: none;
+            top: 50px;
+        }
+
+        .boarding__title[_ngcontent-c2] {
+            font-size: 40px !important;
+            max-width: 410px;
+        }
+
+        .boarding[_ngcontent-c2].started .boarding__title[_ngcontent-c2] {
+            text-align: center !important;
+            max-width: 100%;
+        }
+
+        .boarding[_ngcontent-c2].started .boarding__buttons[_ngcontent-c2] {
+            display: flex;
+            margin-top: 50px;
+            text-align: center;
+            margin: 29px auto;
+        }
+
+        .boarding__signup[_ngcontent-c2] span[_ngcontent-c2] {
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .landing__section[_ngcontent-c1] {
+          box-shadow:none !important;
+        }
+        .landing__section.top[_ngcontent-c1] {
+            box-shadow: inset 0 -30px 50px -40px rgba(0,0,0,.35) !important;
+        }
+        #navbarCollapse.open{
+            top: 0;
+            background: #fff;
+            position: absolute;
+            width: 90%;
+            padding: 10px 5%;
+            z-index: 999;
+            display:block;
+        }
+		.webfootertop .boarding__text[_ngcontent-c3] {
+			max-width:100 !important;
+			text-align:center !important;
+		}
+		.webfootertop .boarding .boarding__button {
+			max-width:100 !important;
+			text-align:center !important;
+		}
+		.webfootertop .boarding .boarding__no-card {
+			max-width:100 !important;
+			text-align:center !important;
+		}
+		
+    </style>
+    
+</div>

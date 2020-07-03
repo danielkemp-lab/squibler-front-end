@@ -1,0 +1,34 @@
+<div class="board-item" [ngClass]="{'open': open, 'active': active}" >
+
+  <div class="board-item__header">
+    <span *ngIf="!board.color && !board.iconName" class="board-color" [style.background-color]="'#bfbfbf'"></span>
+    <span *ngIf="board.color" class="board-color" [style.background-color]="board.color"></span>
+    <i *ngIf="board.iconName" class="emoji-{{board.iconName}}"></i>
+
+    <input class="board-item__title" type="text" #boardName value="{{board.name}}" placeholder="Untitled"
+      (keyup.enter)="boardName.blur();" (blur)="updateBoardName(boardName.value)"/>
+    <div class="board-item__add-idea" (click)="addNewNote($event)"></div>
+    <div class="tabs__tab-title-arrow" (click)="toggleItems($event)"></div>
+    <div class="ideas__dropdown icon-more-vertical" (click)="openDeletePopup = !openDeletePopup" (mouseleave)="openDeletePopup = false">
+      <div class="ideas__dropdown-content" [ngClass]="{'action': openDeletePopup}">
+        <div class="ideas__dropdown-item delete" (click)="deleteBoard(board)">Delete</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="{{ board.uuid }}-notesDiv">
+    <div class="board-item__list-item" *ngFor="let item of board.notes" (click)="onBoardClick.emit({board: board, boardOpen: open, note: item})">
+      <div class="board-item__item-header">
+        <input class="board-item__item-title" type="text" #boardNoteTitle value="{{ item.title || getNoteText(item.text) }}" placeholder="Empty note"
+               (keyup.enter)="updateBoardNoteTitle(item.uuid, boardNoteTitle.value, true);" (blur)="updateBoardNoteTitle(item.uuid, boardNoteTitle.value)"/>
+      </div>
+      <div class="board-item__dropdown icon-more-vertical">
+        <div class="board-item__dropdown-content">
+          <div class="board-item__dropdown-item" (click)="duplicateNote($event, item)">Duplicate</div>
+          <div class="board-item__dropdown-item delete" (click)="deleteNote($event, item)">Delete</div>
+        </div>
+      </div>
+      <div class="board-item__item-line"></div>
+    </div>
+  </div>
+</div>

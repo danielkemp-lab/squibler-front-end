@@ -1,0 +1,92 @@
+.header {
+  position: absolute;
+  width: 100%;
+  min-width: 1280px;
+  top: 0;
+  left: 0;
+  display: flex;
+  background-color: #ffffff;
+  flex-direction: column;
+  z-index: 9999999;
+  &_title {
+    box-shadow: none;
+    .header {
+      &__top {
+        height: 80px;
+      }
+      &__logo-img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+  &__menu {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  &__top {
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+    padding: 0 85px 0 90px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+  }
+
+  &__title {
+    height: 150px;
+    padding-top: 20px;
+    font-size: 24px;
+    color: #4e4e4e;
+  }
+  &__boxes {
+    margin: 15px;
+    cursor: pointer;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+    &.active,
+    &:hover {
+      color: #2b97a0;
+    }
+  }
+  &__logo {
+    display: flex;
+    align-items: center;
+    margin-right: 118.5px;
+  }
+  &__navigation {
+    font-size: 14px;
+    color: #979797;
+    margin-left: 15px;
+    font-weight: 400;
+    text-decoration: none;
+  }
+  &__logo-img {
+    width: 30px;
+    height: 30px;
+    background-image: url('../../../../assets/images/logo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  &__logo-text {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+    margin-left: 5px;
+  }
+}

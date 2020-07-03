@@ -1,0 +1,17 @@
+<div class="header">
+  <div class="header__top">
+    <div class="header__menu">
+      <div class="header__logo" (click)="this.router.navigateByUrl('/');">
+        <div class="header__logo-img"></div>
+        <div class="header__logo-text">Squibler</div>
+      </div>
+      <div>
+        <span (click)="transition('editor')" class="header__boxes" [ngClass]="{'active': selected === 'editor' }"> Editor </span>
+        <span (click)="transition('projects')" class="header__boxes" [ngClass]="{'active': selected === 'projects'}"> Projects </span>
+        <span (click)="transition('ideas')" class="header__boxes" [ngClass]="{'active': selected === 'ideas' }"> Idea Board </span>
+        <span (click)="transition('boards')" class="header__boxes" [ngClass]="{'active': selected === 'boards'}"> Boards</span>
+      </div>
+    </div>
+    <app-header-user (click)="this.router.navigateByUrl('/profile');"></app-header-user>
+  </div>
+</div>

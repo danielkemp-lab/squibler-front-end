@@ -1,0 +1,64 @@
+<div class="auth">
+
+    <div class="auth__form">
+        <a routerLink="/" class="auth__logo">
+            <div class="auth__logo-img">
+                <img src="../../../../assets/images/logo.png" alt="">
+            </div>
+            <div class="auth__logo-text">Squibler</div>
+        </a>
+        <div class="auth__img"></div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth__form-block">
+            <div class="auth__title">Sign Up</div>
+            <input type="email" name="email" formControlName="email" class="auth__input" ngModel email="true"
+                   placeholder="Email Address"
+                   [ngClass]="{ 'is-invalid': submitted && registerFormState.email.errors }"/>
+            <div *ngIf="submitted && registerFormState.email.errors" class="auth__error">
+                Email not valid
+            </div>
+            <input type="password" name="password" formControlName="password" class="auth__input"
+                   placeholder="Create Password"
+                   [ngClass]="{ 'is-invalid': submitted && registerFormState.password.errors }">
+            <div class="auth__terms">By clicking "Create Account" you agree to our
+                <a class="no-underline" (click)='redirect( "https://www.squibler.io/terms-of-service")'>Terms of
+                    Service</a> and
+                <a class="no-underline"
+                   (click)='redirect( "https://www.iubenda.com/privacy-policy/69329368/cookie-policy")'>Privacy
+                    Policy</a>.
+            </div>
+            <button class="auth__button auth__button_signup">
+                <span class="balls-white" *ngIf="loading"></span>
+                <span *ngIf="!loading">Create Account</span>
+				
+            </button>
+			<div class="login-options">
+			   <span style="margin-top: 16px;margin-left:80px;">or</span>
+                <div class="gsign" (click)="signInWithGoogle()">
+                    <span class="icon"></span>
+                    <span>Continue with Google</span>
+                </div>
+
+                <div class="fsign gsign" (click)="signInWithFacebook()">
+                    <span class="icon"></span>
+                    <span>Continue with Facebook</span>
+                </div>
+			</div>
+
+            <div class="auth__error" *ngIf="registerError && submitted">
+                User already exist
+            </div>
+        </form>
+        <div class="auth__footer" style="margin-top: 16px;margin-left:-30px;">
+            Already have an account ?
+            <a [routerLink]="['/auth/login']">Sign in</a>
+        </div>
+    </div>
+    <div class="auth__baner">
+        <div class="auth__baner-title">
+            Write and publish your book in 30 days:
+        </div>
+        <div class="auth__baner-item">○ Get 10 days free and fall in love with product</div>
+        <div class="auth__baner-item">○ Capture your ideas, Create an outline, Publish your book</div>
+        <div class="auth__baner-item">○ The only online tool that enables you to write books faster</div>
+    </div>
+</div>

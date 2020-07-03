@@ -1,0 +1,6 @@
+
+def build():
+    !ng build --prod --aot --vendor-chunk --common-chunk --delete-output-path --buildOptimizer
+
+if __name__ == '__main__':
+    build()

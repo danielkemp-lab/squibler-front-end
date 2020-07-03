@@ -1,0 +1,144 @@
+<!-- <div class="sidebar__block" [ngClass]="{'open': open || content === 'boards' }" > -->
+<div class="sidebar__block" [ngClass]="{ open: open }">
+  <div class="tabs__tab-header" [ngClass]="{ summary: content === 'summary' }">
+    <div class="tabs__tab-title" (click)="showDetailsClick()">
+      {{ title }} <span *ngIf="count && !open">({{ count }})</span>
+      <div class="tabs__tab-title-arrow"></div>
+    </div>
+    <div class="tabs__tab-add-section" *ngIf="content === 'outline'" (click)="addSection()">
+      Add section
+    </div>
+    <div class="tabs__tab-add-section" *ngIf="content === 'boards'" (click)="addBoard.emit()">
+
+    </div>
+  </div>
+  <div class="sidebar__block-content">
+    <ng-container *ngIf="content === 'options'">
+      <div class="editor__project-details-content">
+        <div class="editor__project-stats">
+          <span>{{ project.sectionsCount }}</span> Sections /
+          <span>{{ project.subSectionsCount }}</span> Subsections /
+          <span>{{ project.notesCount }}</span> Notes
+        </div>
+        <div class="editor__project-export " [ngClass]="{ active: projectExportOptions, hidden: exporting }">
+          <div class="editor__project-export-btn " (click)="projectExportOptions = true">
+            Export
+          </div>
+          <div class="editor__project-export-options ">
+            <div class="editor__project-export-option " (click)="onExportProject.emit('pdf')">
+              PDF
+            </div>
+            <div class="editor__project-export-option " (click)="onExportProject.emit('txt')">
+              TXT
+            </div>
+            <div class="editor__project-export-option " (click)="onExportProject.emit('docx')">
+              DOC
+            </div>
+            <div class="editor__project-export-option " (click)="onExportProject.emit('mobi')">
+              Kindle
+            </div>
+          </div>
+        </div>
+        <div class="editor__project-export-progress " [ngClass]="{ active: exporting }">
+          <div class="editor__project-export-progress-text ">
+            <span *ngIf="!exportReady">Exporting: </span>
+            <span class="format ">{{ exportFormat }}</span>
+            <span *ngIf="exportReady"> is Ready!</span>
+          </div>
+          <div *ngIf="!exportReady" class="balls"></div>
+          <div class="editor__project-export-save " [ngClass]="{ active: exportReady }" (click)="onSaveExportedFile.emit(); projectExportOptions = false">
+            Save
+          </div>
+        </div>
+        <div class="editor__project-versions ">
+          <div class="editor__project-versions-header ">
+            <div class="editor__project-details-content-header ">
+              Version History
+              <div class="editor__project-versions-add" (click)="onAddNewVersion.emit()">
+                New Version
+              </div>
+            </div>
+            <div class="editor__project-versions-last ">Last changes</div>
+          </div>
+          <div class="editor__project-versions-list ">
+            <div *ngFor="let version of versionList">
+              <div class="editor__project-versions-item" [ngClass]="{ active: version.uuid === project.uuid }">
+                <div class="editor__project-versions-item-name " (click)="onRedirectVersion.emit(version)">
+                  {{ version.title !== "" ? extractContent(version.title) : "Untitled" }}
+                </div>
+                <div class="editor__project-versions-item-current ">
+                  current
+                </div>
+                <div class="editor__project-versions-item-date ">
+                  {{ version.createdAt | date: "dd/MM/yy - HH:mm" }}
+                </div>
+                <div class="editor__project-versions-item-delete icon-trash-2 " (click)="versionDelete(version)"></div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="versionAllert">Maximum quantity of versions is 4</div>
+        </div>
+        <div class="sidebar__delete-popup" [ngClass]="{ open: showVersionDeletePopup }">
+          <div class="sidebar__delete-popup-title">
+            Are you sure you want permanently delete this Version?
+          </div>
+          <div class="sidebar__delete-popup-controls">
+            <button class="sidebar__delete-yes-button" (click)="deleteVersion($event, true)">
+              yes
+            </button>
+            <button (click)="deleteVersion($event, false)">no</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="content === 'outline'">
+      <div *ngIf="!outline" class="sidebar__new-project-name" [ngClass]="{
+          new: !project.sections.length,
+          active: selectedSectionId === ''
+        }" (click)="onProjectClick.emit()" (dblclick)="$event.preventDefault(); $event.stopPropagation(); projectTitle.focus(); projectTitle.select()" >
+        <input type="text" #projectTitle value="{{extractContent(project.title)}}" placeholder="Title your project" (click)="projectTitle.focus()" (keyup.enter)="projectTitle.blur()" (blur)="updateProjectTitle(projectTitle.value)" />
+      </div>
+      <project-tree *ngIf="project.sections.length" [selectedSectionId]="selectedSectionId" [projectId]="project.uuid" [sections]="project.sections" (onSectionDelete)="sectionDelete($event, e)" (onSectionClick)="onSectionClick.emit($event)" (onFieldFocus)="onFieldFocus.emit($event)" (onSectionDrag)="onProjectClick.emit({})"></project-tree>
+      <div class="sidebar__delete-popup" [ngClass]="{ open: showDeletePopup }">
+        <div class="sidebar__delete-popup-title">
+          Are you sure you want permanently delete this section and all of its
+          associated content?
+        </div>
+        <div class="sidebar__delete-popup-controls">
+          <button class="sidebar__delete-yes-button" (click)="deleteSection($event, true)">
+            yes
+          </button>
+          <button (click)="deleteSection($event, false)">no</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- <div class="board__delete-popup" [ngClass]="{'show-delete-popup': deleteBoardPopup}">
+
+        <button (click)="deleteBoardPopup = false;">No</button>
+        <button (click)="deleteBoard()">Yes</button>
+
+    </div> -->
+
+    <ng-container *ngIf="content === 'summary'">
+      <div class=" balls" *ngIf="loading"></div>
+      <div class="ideas" *ngIf="!loading">
+        <div *ngIf="!summary" class="ideas__item empty-summary" (click)="openSummary.emit()">
+          {{ "Give your " + workingon + " clarity and direction by adding a " + workingon + " summary here..." }}
+        </div>
+        <div class="ideas__item" *ngIf="summary" (click)="openSummary.emit()">
+          <div class="ideas__item-description">
+            <div class="ideas__item-description-text" [innerHTML]="summary"></div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="content === 'boards'">
+      <div class="block__boards-list">
+        <app-board-item *ngFor="let board of boards" [active]="board.uuid === selectedBoardId" [board]="board" (onUpdateBoardName)="onUpdateBoardName.emit($event)" (onUpdateBoardNoteTitle)="onUpdateBoardNoteTitle.emit($event)" (onBoardDelete)="onBoardDelete($event)" (onBoardClick)="onBoardClick.emit($event)" (onNoteAdd)="onNoteAdd.emit($event)"></app-board-item>
+      </div>
+    </ng-container>
+  </div>
+</div>

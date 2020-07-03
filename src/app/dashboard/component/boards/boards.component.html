@@ -1,0 +1,171 @@
+<div class="ideas">
+  <!-- <app-header [selected]="'ideas'"></app-header> -->
+  <div class="balls" *ngIf="loader"></div>
+  <div class="ideas__board-header" *ngIf="!loader">
+    <div style="display: flex; width: 100%; align-items: center">
+      <div class="board-icon-tooltip" [ngClass]="{'active': iconTooltip}">Click here to add<br>a custom icon</div>
+      <span *ngIf="!board.color && !board.iconName" class="board-color" [style.background-color]="'#bfbfbf'" (click)="toggleIcon()"></span>
+      <span *ngIf="board.color" class="board-color" [style.background-color]="board.color" (click)="toggleIcon()"></span>
+      <span *ngIf="board.iconName" id="emoji" class="emoji-{{board.iconName}}" (click)="toggleIcon()"></span>
+      <app-custom-title-popup [active]="iconPopup" (onIconClick)="updateBoardIcon($event)" (onColorClick)="updateBoardColor($event)"></app-custom-title-popup>
+      <div class="ideas__board-header-input">
+        <input type="text" id="boardName" #boardName value="{{board ? board.name : ''}}" placeholder="Untitled" (keyup.enter)="onEnterPress(boardName.value)" (blur)="updateBoardName(boardName.value); noclick=true;" />
+      </div>
+      <div class="board__delete-popup" [ngClass]="{'show-delete-popup': deleteBoardPopup}">
+        <div class="board__delete-popup-title">Are you sure you want permanently delete this board and all of its associated content?</div>
+        <div class="board__delete-popup-controls">
+          <button (click)="deleteBoardPopup = false;">No</button>
+          <button (click)="deleteBoard()">Yes</button>
+        </div>
+      </div>
+    </div>
+    <div [hidden]="!updated" class="editor__notification">Your work has been saved!</div>
+  </div>
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: row;" *ngIf="!loader">
+    <!--<div class="ideas__list">-->
+      <!--<div class="ideas__list-header">-->
+        <!--<div class="ideas__add-idea" (click)="addNewNote()">Add new</div>-->
+        <!--&lt;!&ndash; <div class="ideas__search-idea">-->
+          <!--<i class="icon-search" (click)="searchActive = true; focusSearch();"></i>-->
+          <!--<input #searchInput type="text" [ngClass]="{'active': searchActive}" [(ngModel)]="searchText" placeholder="Search..." />-->
+        <!--</div> &ndash;&gt;-->
+      <!--</div>-->
+      <!--<div class="ideas__items">-->
+        <!--&lt;!&ndash; <div class="ideas__items_empty" *ngIf="board && board.notes && !board.notes.length">Add note to start your thoughts.</div> &ndash;&gt;-->
+        <!--<div class="ideas__list-item" [ngClass]="{'active': item.uuid == note.uuid}" (click)="noteClick(item)" *ngFor="let item of board.notes | filterNotes : searchText">-->
+          <!--<div class="ideas__item-header">-->
+            <!--<div class="ideas__item-title" [ngClass]="{'empty': !item.title}">{{ item.title || 'Untitled Idea'}}</div>-->
+          <!--</div>-->
+          <!--&lt;!&ndash; <div class="ideas__item-content" [ngClass]="{'empty': !item.description, 'include-image' : item.imageArray ? item.imageArray.length : 'undefined'}" [innerHTML]="item.description ? item.description : 'No additional text...' "></div> &ndash;&gt;-->
+          <!--<div class="image-inside" [hidden]="item.imageArray ? !item.imageArray.length : true">-->
+            <!--<img src="{{item.imageArray ? item.imageArray[0] : null }}" alt="img">-->
+            <!--<div class="center-number">{{item.imageArray ? item.imageArray.length-1 > 0 ? '+'.concat(item.imageArray.length-1) : '' : ''}}</div>-->
+          <!--</div>-->
+          <!--<div class="ideas__dropdown icon-more-vertical">-->
+            <!--<div class="ideas__dropdown-content">-->
+              <!--<div class="ideas__dropdown-item" (click)="duplicateNote($event, item)">Duplicate</div>-->
+              <!--<div class="ideas__dropdown-item delete" (click)="deleteNote($event, item)">Delete</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="ideas__item-line"></div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!-- <div class="ideas__notification" [ngClass]="{'active': addPopupFlag}">Idea has been assigned and moved to:
+      <a [routerLink]="['/dashboard/projects/' + assignedProjectId]">{{assignedProjectName}}</a>
+    </div> -->
+    <div class="ideas__editor" [ngClass]="{'full': fullscreen, 'hidden': board && board.notes && !board.notes.length || !note }">
+      <form style="height: 100%">
+        <div click-outside (ClickOutside)="detailsClickOutside($event)" class="ideas__editor-header">
+          <input #noteTitle id="noteTitle" type="text" value="{{note ? note.title : ''}}" class="ideas__editor-title" placeholder="Untitled Idea" (keyup.enter)="onEnterPressNotes(noteTitle.value)" (blur)="updateNoteTitle(noteTitle.value)" />
+          <div class="ideas__editor-dropdown" (click)="openedIdeaControlPopup()">Options
+
+            <div class="ideas__editor-dropdown-content1 first-control-popup1" [ngClass]="{'active' : openedIdeaControlPopupVar }">
+              <div class="ideas__editor-dropdown-item" (click)="openedProjectPopup('moveTo')">
+                Move to Project
+              </div>
+              <div class="ideas__editor-dropdown-item" (click)="openedProjectPopup('copyTo')">
+                Copy to Project
+              </div>
+              <div class="ideas__editor-dropdown-item" (click)="copyText()">
+                Copy text
+              </div>
+              <div class="ideas__editor-dropdown-item" (click)="duplicateNote($event, note)">
+                Duplicate
+              </div>
+              <div class="ideas__editor-dropdown-item last-child" (click)="deleteNote($event, note)">
+                Delete
+              </div>
+            </div>
+
+            <div class="ideas__editor-dropdown-content close-popup-menu" [ngClass]="{'active' : openedProjectPopupVar }">
+              <div class="ideas__editor-popup-title">
+                PROJECTS
+              </div>
+              {{projectListlength}}
+              <div *ngIf="projectList && projectList.length === 0" (click)="addNewProjectRedirect()">
+                Add new project +
+              </div>
+              <div class="ideas__editor-dropdown-item" *ngFor="let project of projectList" (click)="addIdeaToProject(project)">
+                {{project.title === '' ? 'Untitled' : project.title}}
+              </div>
+              <div class="ideas__editor-popup-title">
+                BOARDS
+              </div>
+              <div *ngFor="let allBoard of boardList" (click)="addIdeaToBoard(allBoard)">
+                <div *ngIf="board.uuid !== allBoard.uuid" class="ideas__editor-dropdown-item" [hidden]="saveDocumentFlag">
+                  {{allBoard.name === '' ? 'Untitled' : allBoard.name}}
+                </div>
+              </div>
+              <div *ngIf="boardList && boardList.length <= 1">
+                <div class="navigation__boards-add" (click)="addNewBoard()">
+                  <i class="icon-plus-circle">
+                  </i> New board
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="popupCurrentProjectVisible">
+              <div class="ideas__editor-dropdown-content close-popup-menu" [ngClass]="{'active' : popupCurrentProjectVisible }">
+                <div class="ideas__editor-popup-title">
+                  SECTIONS
+                </div>
+                <div class="ideas__editor-dropdown-item" *ngFor="let section of popupCurrentProject.sections" (click)="addIdeaToSection(section)">
+                  {{section.title === '' ? 'Untitled' : section.title}}
+                </div>
+                <div class="ideas__editor-popup-title">
+                  PROJECT BOARDS
+                </div>
+                <div *ngFor="let projectBoard of popupCurrentProject.boards" (click)="addIdeaToBoard(projectBoard)">
+                  <div class="ideas__editor-dropdown-item">
+                    {{projectBoard.name === '' ? 'Untitled' : projectBoard.name}}
+                  </div>
+                </div>
+                <div *ngIf="popupCurrentProject.boards && popupCurrentProject.boards.length < 1">
+                  <div class="navigation__boards-add" (click)="addNewBoardToProject()">
+                    <i class="icon-plus-circle">
+                    </i> New board
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="popupCurrentSectionVisible">
+              <div class="ideas__editor-dropdown-content close-popup-menu" [ngClass]="{'active' : popupCurrentSectionVisible }">
+                <div class="ideas__editor-popup-title">
+                  SECTION BOARDS
+                </div>
+                <div *ngFor="let sectionBoard of popupCurrentSection.boards" (click)="addIdeaToBoard(sectionBoard)">
+                  <div class="ideas__editor-dropdown-item">
+                    {{sectionBoard.name === '' ? 'Untitled' : sectionBoard.name }}
+                  </div>
+                </div>
+                <div *ngIf="popupCurrentSection.boards.length < 1">
+                  <div class="navigation__boards-add" (click)="addNewBoardToProjectSection()">
+                    <i class="icon-plus-circle">
+                    </i> New board
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="ideas__editor-fullscreen" (click)="fullscreen = !fullscreen;"></div>
+        <div>
+<!--          <textarea [froalaEditor]="options" [(froalaModel)]="editorContent"></textarea>-->
+          <div class="editor_top_bar">
+            <!--        <div class="editor__fullscr-btn " (click)="toggleFullScr()"></div>-->
+            <div id="toolbarContainer" class="toolbar"></div>
+            <div #toolbarConatiner></div>
+          </div>
+          <div class="wysiwyg-editor notes_placeholder_main">
+            <div #notesEditor title="notes_text" id="boardContent" [innerHTML]="notestemp" class="wysiwyg-editor__content editor_summary_title" (keyup)="onNotesChange($event)" (input)="onNotesChange($event)" (click)="clickFunction($event)" (blur)="blurFunction($event)" (focus)="focusFunction($event)" contenteditable="true" spellcheck="true">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

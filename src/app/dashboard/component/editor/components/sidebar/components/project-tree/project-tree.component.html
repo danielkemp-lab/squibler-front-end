@@ -1,0 +1,5 @@
+<div cdkDropList class="project" id="project-tree" (cdkDropListDropped)="drop($event)">
+  <project-tree-section cdkDrag *ngFor="let section of sections" [projectId]="projectId" [active]="section.uuid === selectedSectionId" [section]="section" (subSectionEditNumber)="onSectionEditNumber($event)" [selectedSubSectionId]="selectedSubSectionId" (onSectionDelete)="onSectionDelete.emit($event, e)" (onSectionClick)="onSectionClick.emit($event)" (onFieldFocus)="onFieldFocus.emit($event)">
+    <div handle class="drag-handle icon-repeat" (click)="$event.stopPropagation()" cdkDragHandle></div>
+  </project-tree-section>
+</div>

@@ -1,0 +1,54 @@
+[class^="emoji-"],
+[class*=" emoji-"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    max-height: 16px;
+    max-height: 16px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.emoji {
+    &-mountain {
+        background-image: url("./assets/images/icons/mountain.png");
+    }
+    &-scissors {
+        background-image: url("./assets/images/icons/scissors.png");
+    }
+    &-music {
+        background-image: url("./assets/images/icons/note.png");
+    }
+    &-family {
+        background-image: url("./assets/images/icons/family.png");
+    }
+    &-queen {
+        background-image: url("./assets/images/icons/princess.png");
+    }
+    &-bulb {
+        background-image: url("./assets/images/icons/light_bulb.png");
+    }
+    &-pin {
+        background-image: url("./assets/images/icons/pin.png");
+    }
+    &-detective {
+        background-image: url("./assets/images/icons/detective.png");
+    }
+    &-pen {
+        background-image: url("./assets/images/icons/pen.png");
+    }
+    &-notepad {
+        background-image: url("./assets/images/icons/notepad.png");
+    }
+    &-character {
+        content: "👩‍🎤";
+    }
+    &-clipboard {
+        background-image: url("./assets/images/icons/clipboard.png");
+    }
+    &-salad {
+        content: "🥗";
+    }
+}

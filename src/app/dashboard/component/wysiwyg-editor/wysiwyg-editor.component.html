@@ -1,0 +1,6 @@
+<div class="wysiwyg-editor" *ngIf="toolbarConfigs">
+  <app-editor-toolbar *ngIf="focusEvent" [configs]="toolbarConfigs" (onFormat)="contentFormat($event)"></app-editor-toolbar>
+  <div #editor id='1ad42973-ce5e-4acd-bd67-fef503fee951' class="wysiwyg-editor__content" (keyup)="updateSectionById()" (blur)="blurFunction($event)" (focus)="focusFunction($event)" contenteditable="true" spellcheck="false">
+  </div>
+
+</div>

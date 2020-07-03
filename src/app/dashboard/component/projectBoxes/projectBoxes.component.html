@@ -1,0 +1,35 @@
+<div class="project-item" (click)="redirectToProject()">
+  <div class="project-item__thumbnail" [ngStyle]="{'background-image': 'linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8)), url(' + project.thumbnail + ')'}">
+    <div class="project-item__ring"> </div>
+    <div class="project-item__dropdown icon-more-vertical" (click)="$event.stopPropagation(); openDeletePopup = !openDeletePopup" (mouseleave)="openDeletePopup = false">
+      <div class="project-item__dropdown-content" [ngClass]="{'action': openDeletePopup}">
+        <div class="project-item__dropdown-item" (click)="$event.stopPropagation(); fileInput.click();">
+          <i class="far fa-image"></i>Upload image</div>
+        <div (click)="_duplicateProject($event, project.uuid);" class="project-item__dropdown-item">
+          <i class="far fa-clone"></i>Duplicate</div>
+        <div (click)="_deleteProject($event, project.uuid);" class="project-item__dropdown-item delete">
+          <i class="far fa-trash-alt"></i>Delete</div>
+      </div>
+    </div>
+    <input style="display: none" type="file" (click)="$event.stopPropagation(); " (change)="_updateProjectImage($event, project.uuid)" accept="image/x-png,image/gif,image/jpeg" #fileInput>
+    <div class="project-item__title">{{extractContent(project.title) || 'Untitled Project'}}</div>
+    <div class="project-item__date">
+      <span>last edited</span> {{ getDate(project.updatedAt)}}
+    </div>
+  </div>
+  <div class="project-item__body">
+    <div class="project-item__info">
+      <span>{{project.sectionsCount}}</span>
+      SECTIONS
+    </div>
+    <div class="project-item__info">
+      <span>{{project.subSectionsCount}}</span>
+      SUB-SECTIONS
+    </div>
+    <div class="project-item__info">
+      <span>{{project.notesCount}}</span>
+      notes
+    </div>
+    <div class="project-item__open"> {{ buttonText }} </div>
+  </div>
+</div>

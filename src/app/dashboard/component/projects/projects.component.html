@@ -1,0 +1,35 @@
+<div class="projects">
+  <div class="balls" *ngIf="loading"></div>
+
+  <div class="projects__header" *ngIf="projects.length">
+    <div class="projects__title">Projects</div>
+    <div class="button-add-project" (click)="createProject()" *ngIf="!loading">New Project</div>
+  </div>
+  <div class="projects__list" [ngClass]="{'blur': confirmDeletePopup}" *ngIf="projects.length && !loading">
+    <div class="main-box-block">
+      <div class="single-box" *ngFor="let project of projects; let i = index">
+        <app-project-boxes (deleteProject)="confirmDeletePopup = true; projectId = $event;" (duplicateProject)="duplicateProject($event)" (updateProjectPhoto)="updateProjectPhoto($event)" [project]="project">
+        </app-project-boxes>
+      </div>
+    </div>
+  </div>
+  <div class="projects__empty-list" *ngIf="!projects.length  && !loading">
+    <div class="projects__empty-desc">
+      <div class="projects__empty-title">Projects</div>
+      <div class="projects__empty-text">In this section you will find
+        <span>all your projects</span>, edit
+        <br> them and create a new ones.</div>
+    </div>
+    <div class="projects__empty-title">Nothing is written yet</div>
+    <div class="projects__empty-btn" (click)="createProject()">Start writing</div>
+  </div>
+  <div class="projects__delete-popup" [ngClass]="{'open': confirmDeletePopup}">
+
+    <div class="projects__delete-popup-title">Are you sure you want permanently delete this project and all of its associated content?</div>
+    <div class="projects__delete-popup-controls">
+      <button class="projects__delete-yes-button" (click)="deleteProject(projectId)">yes</button>
+      <button (click)="confirmDeletePopup = false; projectId = '';"> no</button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,19 @@
+<div *ngIf="summaryForm" style="height: 100%">
+  <div class="editor editor_notes">
+      <div class="editor_notes-success">All changes has been saved</div>
+    <form [formGroup]="summaryForm" (ngSubmit)="onSubmit()">
+      <!-- <input #summaryName type="text" name="title" formControlName="title" class="editor__input" placeholder="Untitled Idea" /> -->
+<!--      <textarea (keydown)="onKeyDown($event)" (froalaEventName)="someFunction()" formControlName="description" [froalaEditor]="options" [froalaModel]="editorContent" placeholder="Start your thoughts here...">Hello, Froala!</textarea>-->
+      <div class="editor_top_bar">
+        <div class="editor__fullscr-btn " (click)="toggleFullScr()"></div>
+        <div id="toolbarContainer" class="toolbar"></div>
+        <div #toolbarConatiner></div>
+      </div>
+      <div class="wysiwyg-editor summary_placeholder_main">
+        <div #editor title="summary_text" [innerHTML]="editorContent" class="wysiwyg-editor__content editor_summary_title" (keyup)="saveProject($event)" (input)="saveProject($event)" (blur)="blurFunction($event)" (focus)="focusFunction($event)" contenteditable="true" spellcheck="true">
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div> 

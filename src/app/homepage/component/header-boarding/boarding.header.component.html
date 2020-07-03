@@ -1,0 +1,68 @@
+<section class="boarding" [ngClass]="{ started: started, footer: footer }">
+    <div class="boarding__container" [ngClass]="{ active: visible && slide === 0 }">
+        <div class="boarding__title">Write a Book Faster</div>
+        <div class="boarding__text">
+		    The best book writing software.<br/>Try Squibler FREE
+            <!--The best book writing software. Try Squibler FREE -->
+        </div>
+        <div class="boarding__button start" (click)="start()">Start Outlining</div>
+        <div class="boarding__no-card">No Card Needed</div>
+    </div>
+    <div class="boarding__container slide" [ngClass]="{ active: visible && slide === 1 }">
+        <div class="boarding__title">Set your daily writing goal:</div>
+        <div class="boarding__buttons">
+            <div class="boarding__button choice" (click)="time = '10'; next()">
+                10 min
+            </div>
+            <div class="boarding__button choice" (click)="time = '30'; next()">
+                30 min
+            </div>
+            <div class="boarding__button choice" (click)="time = '60'; next()">
+                60 min
+            </div>
+        </div>
+    </div>
+    <div class="boarding__container slide" [ngClass]="{ active: visible && slide === 2 }">
+        <div class="boarding__title">I want to write a …</div>
+        <div class="boarding__buttons">
+            <div class="boarding__button choice" (click)="book = 'fiction'; next()">
+                Fiction Book
+            </div>
+            <div class="boarding__button choice" (click)="book = 'non-fiction'; next()">
+                Non-fiction Book
+            </div>
+        </div>
+    </div>
+    <div class="boarding__container slide" [ngClass]="{ active: visible && slide === 3 }">
+        <div class="boarding__title">Get started</div>
+        <form class="boarding__signup" [formGroup]="registerForm" (ngSubmit)="formSubmit()">
+            <div class="row">
+                <input (keyup.enter)="formSubmit()" type="email" name="email" formControlName="email"
+                       class="boarding__input" email="true"
+                       placeholder="Email adress" [ngClass]="{ invalid: submited && registerFormState.email.errors }"/>
+                <input (keyup.enter)="formSubmit()" type="password" name="password" formControlName="password"
+                       class="boarding__input" placeholder="Set the password"
+                       [ngClass]="{ invalid: submited && registerFormState.password.errors }"/>
+                <div class="boarding__button" (click)="formSubmit()">
+                    <span class="balls-white" *ngIf="loading"></span>
+                    <span *ngIf="!loading">Sign Up</span>
+                </div>
+            </div>
+            <div class="errors">
+                <div class="boarding__error" *ngIf="registerError">
+                    {{ registerError }}
+                </div>
+            </div>
+            <span class="boarding__or">or</span>
+            <div class="gsign" (click)="signInWithGoogle()">
+                <span class="icon"></span>
+                <span>Continue with Google&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            </div>
+
+            <div class="fsign gsign" (click)="signInWithFacebook()">
+                <span class="icon"></span>
+                <span>Continue with Facebook</span>
+            </div>
+        </form>
+    </div>
+</section>

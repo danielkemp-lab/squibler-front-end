@@ -1,0 +1,66 @@
+<div class="sidebar" [ngClass]="{ active: active }">
+  <div class="balls" *ngIf="!project"></div>
+  <div *ngIf="project" class=" sidebar__header">
+    <div class="sidebar__project-name" [style.cursor]="active ? 'pointer' : 'default'" (click)="active ? projectClick() : null">
+      {{ project ? extractContent(project.title) || "Untitled Project" : "" }}
+    </div>
+  </div>
+  <div *ngIf="project" class=" sidebar__tabs">
+    <div class="sidebar__toggles">
+      <div class="sidebar__toggle" *ngIf="active" (click)="toggleSidebar()">
+        <div class="sidebar__toggle-btn"></div>
+        {{ active ? "Return to Editor" : "Expand" }}
+      </div>
+      <app-sidebar-toggle [hidden]="active" [title]="'Project Options'" [versionAlert]="versionAlert" [selectedSectionId]="selectedSectionId" (onDeleteVersion)="deleteVersion($event)" (onRedirectVersion)="redirectVersion($event)" (onAddNewVersion)="addNewVersion()" (onExportProject)="exportProject($event)" (onSaveExportedFile)="saveExportedFile()" [exporting]="exporting" [exportReady]="exportReady" [exportFormat]="exportFormat" [versionList]="versionList" [content]="'options'" [project]="project" [open]="false">
+      </app-sidebar-toggle>
+      <app-sidebar-toggle [title]="'Outline'" [selectedSectionId]="selectedSectionId" [count]="project ? project.sections.length : 0" [content]="'outline'" [project]="project" (onSectionClick)="sectionClick($event)"  (onFieldFocus)="onFieldFocus.emit($event)" (onProjectClick)="projectClick()" (onAddNewSection)="addNewSection()" [open]="true">
+      </app-sidebar-toggle>
+      <div class="sidebar__selected-title">
+        <div class="line"></div>
+        <span>{{
+          extractContent(openedTitle) ||
+          (workingOn === "project" ? "Untitled project" : "Untitled section")
+          }}</span>
+      </div>
+      <app-sidebar-toggle [title]="'Summary'" [workingon]="workingOn" [loading]="summaryloading" [content]="'summary'" [summary]="summary" [open]="true" (openSummary)="openSummary()">
+      </app-sidebar-toggle>
+      <app-sidebar-toggle [title]="'Boards'" [count]="boards ? boards.length || 0 : 0" [open]="true" [boards]="boards" [content]="'boards'" [selectedBoardId]="selectedBoardId" (addBoard)="addBoard()" (onUpdateBoardName)="updateBoardName($event)" (onUpdateBoardNoteTitle)="updateBoardNoteTitle($event)" (onBoardClick)="boardClick($event)" (onNoteAdd)="noteAdd($event)"></app-sidebar-toggle>
+    </div>
+    <div *ngIf="selectedBoardId" class="sidebar__board">
+      <app-boards [board]="board" [selectedNote]="this.selectedNote" (onFieldFocus)="onFieldFocus.emit($event)" [projectId]="this.project.uuid" [sectionId]="section ? section.uuid : ''" [boardOpen]="boardOpen" [sectionOpen]="sectionOpened" (onBoardDelete)="boardDelete($event)" ></app-boards>
+    </div>
+    <div *ngIf="!selectedBoardId" class="sidebar__board">
+      <div class="sidebar__summary-title">Summary</div>
+<!--      <textarea #summaryContent [(ngModel)]="summary" (keyup)="onSummaryKeyUp()" (blur)="saveSummary()" class="sidebar__summary-textarea" name="summary" id="summaryEditor" placeholder=" {{ 'Give your ' + workingOn + ' clarity and direction by adding a ' + workingOn + ' summary here...' }}"></textarea>-->
+      <div class="editor_top_bar">
+<!--        <div class="editor__fullscr-btn " (click)="toggleFullScr()"></div>-->
+        <div id="toolbarContainer" class="toolbar"></div>
+        <div #toolbarConatiner></div>
+      </div>
+      <div class="wysiwyg-editor summary_placeholder_main">
+        <div #summaryEditor title="summary_text" [innerHTML]="summaryBar" class="wysiwyg-editor__content editor_summary_title" (keyup)="onSummaryChange($event)" (input)="onSummaryChange($event)" (blur)="onblur($event)" (focus)="focusFunction($event)" contenteditable="true" spellcheck="true">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes-popup" [ngClass]="{ active: summaryPopup }">
+    <div class="notes-popup__view">
+      <div class="notes-popup__view-header">
+        <div class="summary__header-section">
+          {{ extractContent(openedTitle) || "Untitled " + workingOn }}:
+        </div>
+        <div class="summary__header-title">
+          <i class="emoji-clipboard"></i>Summary
+        </div>
+      </div>
+      <div class="notes-popup__view-content">
+        <div class="notes-popup__close-btn" (click)="summaryPopup = false; saveSummary($event)">
+          <span>Save and Close</span>
+        </div>
+
+
+        <textarea [(ngModel)]="summary" name="summary" (keyup)="onSummaryKeyUp()" placeholder="Add your summary here…"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
